@@ -3,6 +3,7 @@ import './App.css';
 import Header from './layout/Header/Header';
 import Featured from './sections/Featured/Featured';
 import AboutMe from './sections/AboutMe/AboutMe';
+import Footer from './layout/Footer/Footer';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Featured firstName={userInformation.firstName} lastName={userInformation.lastName}
               section={userInformation.section} description={userInformation.description}/>
         <AboutMe />
+        <Footer />
     </div>
   );
 }

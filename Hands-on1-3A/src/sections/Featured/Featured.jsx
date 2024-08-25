@@ -2,12 +2,10 @@ import Name from '../../component/Name/Name';
 import Description from '../../component/Description/Description';
 import Section from '../../component/Section/Section';
 import './Featured.css';
-import '@iconscout/unicons/css/line.css';
+
 
 
 function Featured({firstName,lastName,section,description}){
-
-
     return(
         <div className='content-box'>
             <div className='content-text'>

@@ -9,9 +9,8 @@ function AboutMe(){
                 <div className="col">
                     <div className="about-info">
                         <h3>My Introduction</h3>
-                        <p>Hello, I'm Franc Alvenn Dela Cruz, a developer skilled in HTML, CSS, JavaScript, PHP, MySQL, Visual Basic, Java, and Python.
-                            I focus on building functional and user-friendly websites and applications.
-                            Feel free to explore my work and connect with me on new projects.</p>
+                        <p>Hello, I'm Franc Alvenn Dela Cruz, a programmer proficient in HTML, CSS, JavaScript, PHP, MySQL, Visual Basic, Java, and Python.
+                            I focus on building functional and user-friendly websites and applications.</p>
                         <div className="about-btn">
                             <a href='/Dela Cruz, Franc Alvenn - CV (2024).pdf' className="btn" download={"/Dela Cruz, Franc Alvenn - CV (2024).pdf"}>Download CV <i class="uil uil-file-alt"></i></a>
                         </div>
