@@ -1,9 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import Header from './layout/Header/Header';
-import Body from './layout/Body/Body';
-
-
+import Featured from './sections/Featured/Featured';
+import AboutMe from './sections/AboutMe/AboutMe';
 
 
 function App() {
@@ -16,8 +15,9 @@ function App() {
   return (
     <div className="App">
         <Header />
-        <Body firstName={userInformation.firstName} lastName={userInformation.lastName}
+        <Featured firstName={userInformation.firstName} lastName={userInformation.lastName}
               section={userInformation.section} description={userInformation.description}/>
+        <AboutMe />
     </div>
   );
 }
