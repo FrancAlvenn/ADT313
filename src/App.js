@@ -6,6 +6,8 @@ import Login from './pages/Public/Login/Login';
 import Dashboard from './pages/Main/Dashboard/Dashboard';
 import Main from './pages/Main/Main';
 import Register from './pages/Public/Register/Register';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const router = createBrowserRouter([
   {

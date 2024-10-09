@@ -71,45 +71,37 @@ function Login() {
   return (
     <div className='Login'>
       <div className='main-container'>
-        <h3>Login</h3>
+        <div className="background"></div>
         <form>
           <div className='form-container'>
+
+            <div className='login-header'>
+              <h1>Welcome to MovieDB!</h1>
+              <p>Unlock the world of movies, reviews, and exclusive content.</p>
+            </div>
+
             <div>
               <div className='form-group'>
                 <label>E-mail:</label>
-                <input
-                  type='text'
-                  name='email'
-                  ref={emailRef}
-                  onChange={(e) => handleOnChange(e, 'email')}
-                />
+                <input type='text' name='email' ref={emailRef} onChange={(e) => handleOnChange(e, 'email')}/>
               </div>
-              {debounceState && isFieldsDirty && email == '' && (
-                <span className='errors'>This field is required</span>
-              )}
+              {debounceState && isFieldsDirty && email == '' && (<span className='errors'>This field is required</span>)}
             </div>
+
             <div>
               <div className='form-group'>
                 <label>Password:</label>
-                <input
-                  type={isShowPassword ? 'text' : 'password'}
-                  name='password'
-                  ref={passwordRef}
-                  onChange={(e) => handleOnChange(e, 'password')}
-                />
+                <div>
+                  <input type={isShowPassword ? 'text' : 'password'} name='password' ref={passwordRef} onChange={(e) => handleOnChange(e, 'password')}/>
+                  <span className={`fas ${isShowPassword ? 'fa-eye-slash' : 'fa-eye'}` } id='icon-toggle' onClick={handleShowPassword} />
+                </div>
               </div>
-              {debounceState && isFieldsDirty && password == '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-            <div className='show-password' onClick={handleShowPassword}>
-              {isShowPassword ? 'Hide' : 'Show'} Password
+              {debounceState && isFieldsDirty && password == '' && (<span className='errors'>This field is required</span>)}
             </div>
 
+
             <div className='submit-container'>
-              <button
-                type='button'
-                disabled={status === 'loading'}
+              <button type='button' disabled={status === 'loading'}
                 onClick={() => {
                   if (status === 'loading') {
                     return;
@@ -131,7 +123,7 @@ function Login() {
                   }
                 }}
               >
-                {status === 'idle' ? 'Login' : 'Loading'}
+                {status === 'idle' ? 'LOGIN' : 'LOADING'}
               </button>
             </div>
             <div className='register-container'>

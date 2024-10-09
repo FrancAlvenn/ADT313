@@ -102,141 +102,118 @@ function Register() {
   return (
     <div className='Register'>
       <div className='main-container'>
-        <h3>Register</h3>
+        
         <form>
           <div className='form-container'>
-            <div>
-            <div>
-              <div className='form-group'>
-                <label>First Name:</label>
-                <input
-                  type='text'
-                  name='firstName'
-                  ref={firstNameRef}
-                  onChange={(e) => handleOnChange(e, 'firstName')}
-                />
-              </div>
-              {debounceState && isFieldsDirty && firstName == '' && (
-                <span className='errors'>This field is required</span>
-              )}
+            <div className='register-header'>
+              <h1>Welcome to MovieDB!</h1>
+              <p>Unlock the world of movies, reviews, and exclusive content.</p>
             </div>
             <div>
-              <div className='form-group'>
-                <label>Middle Name:</label>
-                <input
-                  type='text'
-                  name='middleName'
-                  ref={middleNameRef}
-                  onChange={(e) => handleOnChange(e, 'middleName')}
-                />
-              </div>
-              {debounceState && isFieldsDirty && middleName == '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-            <div>
-              <div className='form-group'>
-                <label>Last Name:</label>
-                <input
-                  type='text'
-                  name='lastName'
-                  ref={lastNameRef}
-                  onChange={(e) => handleOnChange(e, 'lastName')}
-                />
-              </div>
-              {debounceState && isFieldsDirty && lastName == '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-            <div>
-              <div className='form-group'>
-                <label>Contact Number:</label>
-                <input
-                  type='text'
-                  name='contactNo'
-                  ref={contactNoRef}
-                  onChange={(e) => handleOnChange(e, 'contactNo')}
-                />
-              </div>
-              {debounceState && isFieldsDirty && contactNo == '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-            <div>
-              <div className='form-group'>
-                <label>Role:</label>
-                <input
-                  type='text'
-                  name='role'
-                  ref={roleRef}
-                  onChange={(e) => handleOnChange(e, 'role')}
-                />
-              </div>
-              {debounceState && isFieldsDirty && role == '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-              <div className='form-group'>
-                <label>Email:</label>
-                <input
-                  type='text'
-                  name='email'
-                  ref={emailRef}
-                  onChange={(e) => handleOnChange(e, 'email')}
-                />
-              </div>
-              {debounceState && isFieldsDirty && email == '' && (
-                <span className='errors'>This field is required</span>
-              )}
-              </div>
-            <div>
-              <div className='form-group'>
-                <label>Password:</label>
-                <input
-                  type={isShowPassword ? 'text' : 'password'}
-                  name='password'
-                  ref={passwordRef}
-                  onChange={(e) => handleOnChange(e, 'password')}
-                />
-              </div>
-              {debounceState && isFieldsDirty && password == '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-            <div className='show-password' onClick={handleShowPassword}>
-              {isShowPassword ? 'Hide' : 'Show'} Password
-            </div>
 
-            <div className='submit-container'>
-              <button
-                type='button'
-                disabled={status === 'loading'}
-                onClick={() => {
-                  if (status === 'loading') {
-                    return;
-                  }
-                  if (email && password) {
-                    handleRegister({
-                      type: 'register',
-                      user: { email, password, firstName,middleName,lastName,contactNo,role },
-                    });
-                  } else {
-                    setIsFieldsDirty(true);
-                    if (email == '') {
-                      emailRef.current.focus();
-                    }
+              <div>
+                <div className='form-group'>
+                  <label>First Name:</label>
+                  <input type='text' name='firstName' ref={firstNameRef} onChange={(e) => handleOnChange(e, 'firstName')}/>
+                </div>
+                {debounceState && isFieldsDirty && firstName == '' && (
+                  <span className='errors'>This field is required</span>
+                )}
+              </div>
 
-                    if (password == '') {
-                      passwordRef.current.focus();
+              <div>
+                <div className='form-group'>
+                  <label>Middle Name:</label>
+                  <input type='text' name='middleName' ref={middleNameRef} onChange={(e) => handleOnChange(e, 'middleName')} />
+                </div>
+                {debounceState && isFieldsDirty && middleName == '' && (
+                  <span className='errors'>This field is required</span>
+                )}
+              </div>
+
+              <div>
+                <div className='form-group'>
+                  <label>Last Name:</label>
+                  <input type='text' name='lastName' ref={lastNameRef} onChange={(e) => handleOnChange(e, 'lastName')} />
+                </div>
+                {debounceState && isFieldsDirty && lastName == '' && (
+                  <span className='errors'>This field is required</span>
+                )}
+              </div>
+
+              <div>
+                <div className='form-group'>
+                  <label>Contact Number:</label>
+                  <input type='text' name='contactNo' ref={contactNoRef} onChange={(e) => handleOnChange(e, 'contactNo')} />
+                </div>
+                {debounceState && isFieldsDirty && contactNo == '' && (
+                  <span className='errors'>This field is required</span>
+                )}
+              </div>
+
+              <div>
+                <div className='form-group'>
+                  <label>Role:</label>
+                  <input type='text' name='role' ref={roleRef} onChange={(e) => handleOnChange(e, 'role')} />
+                </div>
+                {debounceState && isFieldsDirty && role == '' && (
+                  <span className='errors'>This field is required</span>
+                )}
+              </div>
+
+              <div>
+                <div className='form-group'>
+                  <label>Email:</label>
+                  <input type='text' name='email' ref={emailRef} onChange={(e) => handleOnChange(e, 'email')} />
+                  </div>
+                  {debounceState && isFieldsDirty && email == '' && (
+                    <span className='errors'>This field is required</span>
+                  )}
+                </div>
+                <div>
+                  <div className='form-group'>
+                    <label>Password:</label>
+                    <div>
+                      <input type={isShowPassword ? 'text' : 'password'} name='password' ref={passwordRef} onChange={(e) => handleOnChange(e, 'password')} />
+                      <span className={`fas ${isShowPassword ? 'fa-eye-slash' : 'fa-eye'}` } id='icon-toggle' onClick={handleShowPassword} />
+                    </div>
+                  </div>
+                  {debounceState && isFieldsDirty && password == '' && (
+                    <span className='errors'>This field is required</span>
+                  )}
+                </div>
+              </div>
+
+              <div className='submit-container'>
+                <button
+                  type='button'
+                  disabled={status === 'loading'}
+                  onClick={() => {
+                    if (status === 'loading') {
+                      return;
                     }
-                  }
-                }}
-              >
-                {status === 'idle' ? 'Register' : 'Loading'}
-              </button>
-            </div>
-            <div className='register-container'>
-              <span><small>Already have an account?<a href='/'>Login</a></small></span>
+                    if (email && password) {
+                      handleRegister({
+                        type: 'register',
+                        user: { email, password, firstName,middleName,lastName,contactNo,role },
+                      });
+                    } else {
+                      setIsFieldsDirty(true);
+                      if (email == '') {
+                        emailRef.current.focus();
+                      }
+
+                      if (password == '') {
+                        passwordRef.current.focus();
+                      }
+                    }
+                  }}
+                >
+                  {status === 'idle' ? 'Register' : 'Loading'}
+                </button>
+              </div>
+              <div className='register-container'>
+                <span><small>Already have an account? <a href='/'>Login</a></small></span>
             </div>
           </div>
         </form>
