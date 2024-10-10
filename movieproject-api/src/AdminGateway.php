@@ -74,4 +74,15 @@ class AdminGateway
         return $res->rowCount();
     }
 
+    public function isUserExists(string $email): bool
+    {
+        $query = "SELECT COUNT(*) FROM users WHERE email = :email";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() > 0;
+    }
+
+
 }

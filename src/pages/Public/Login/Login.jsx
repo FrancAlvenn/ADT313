@@ -17,6 +17,10 @@ function Login() {
 
   const navigate = useNavigate();
 
+  //alert-box
+  const [alertMessage, setAlertMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+
   const handleShowPassword = useCallback(() => {
     setIsShowPassword((value) => !value);
   }, [isShowPassword]);
@@ -40,6 +44,14 @@ function Login() {
     }
   };
 
+  let apiEndpoint;
+
+  if (window.location.pathname.includes('/admin')) {
+    apiEndpoint = '/admin/login';
+  } else {
+    apiEndpoint = '/user/login';
+  }
+
   const handleLogin = async () => {
     const data = { email, password };
     setStatus('loading');
@@ -47,20 +59,34 @@ function Login() {
 
     await axios({
       method: 'post',
-      url: '/admin/login',
+      url: apiEndpoint,
       data,
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => {
         console.log(res);
         localStorage.setItem('accessToken', res.data.access_token);
-        navigate('/main/dashboard');
-        setStatus('idle');
+        
+        //show the alert message
+        setIsError(false);
+        setAlertMessage(res.data.message);
+        setTimeout(() => {
+          navigate('/');
+          setStatus('idle');
+        }, 3000);
       })
       .catch((e) => {
         console.log(e);
-        setStatus('idle');
-        alert(e.response.data.message);
+
+        //show the alert message
+        setIsError(true);
+        setAlertMessage(e.response?.data?.message || e.message);
+        setTimeout(() => {
+          setAlertMessage('');
+          setStatus('idle');
+        }, 3000);
+
+        // alert(e.response.data.message);
       });
   };
 
@@ -71,6 +97,7 @@ function Login() {
   return (
     <div className='Login'>
       <div className='main-container'>
+        {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
         <div className="background"></div>
         <form>
           <div className='form-container'>

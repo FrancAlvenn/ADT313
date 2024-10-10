@@ -25,6 +25,11 @@ function Register() {
   const [debounceState, setDebounceState] = useState(false);
   const [status, setStatus] = useState('idle');
 
+
+  const [alertMessage, setAlertMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+
+
   const navigate = useNavigate();
 
   const handleShowPassword = useCallback(() => {
@@ -71,6 +76,14 @@ function Register() {
     }
   };
 
+  let apiEndpoint;
+
+  if (window.location.pathname.includes('/admin')) {
+    apiEndpoint = '/admin/register';
+  } else {
+    apiEndpoint = '/user/register';
+  }
+
   const handleRegister = async () => {
     const data = { email, password, firstName, middleName, lastName, contactNo, role };
     setStatus('loading');
@@ -78,20 +91,32 @@ function Register() {
 
     await axios({
       method: 'post',
-      url: '/admin/register',
+      url: apiEndpoint,
       data,
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => {
         console.log(res);
         localStorage.setItem('accessToken', res.data.access_token);
-        navigate('/');
-        setStatus('idle');
+
+        //show the alert message
+        setIsError(false);
+        setAlertMessage(res.data.message);
+        setTimeout(() => {
+          navigate('/');
+          setStatus('idle');
+        }, 3000);
       })
       .catch((e) => {
         console.log(e);
         setStatus('idle');
-        alert(e.response.data.message);
+
+        //show the alert message
+        setIsError(true);
+        setAlertMessage(e.response?.data?.message || e.message);
+        setTimeout(() => setAlertMessage(''), 3000);
+
+        //alert(e.response.data.message);
       });
   };
 
@@ -102,7 +127,7 @@ function Register() {
   return (
     <div className='Register'>
       <div className='main-container'>
-        
+        {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
         <form>
           <div className='form-container'>
             <div className='register-header'>
@@ -114,7 +139,7 @@ function Register() {
               <div>
                 <div className='form-group'>
                   <label>First Name:</label>
-                  <input type='text' name='firstName' ref={firstNameRef} onChange={(e) => handleOnChange(e, 'firstName')}/>
+                  <input type='text' name='firstName' ref={firstNameRef} onChange={(e) => handleOnChange(e, 'firstName')} required/>
                 </div>
                 {debounceState && isFieldsDirty && firstName == '' && (
                   <span className='errors'>This field is required</span>
@@ -124,7 +149,7 @@ function Register() {
               <div>
                 <div className='form-group'>
                   <label>Middle Name:</label>
-                  <input type='text' name='middleName' ref={middleNameRef} onChange={(e) => handleOnChange(e, 'middleName')} />
+                  <input type='text' name='middleName' ref={middleNameRef} onChange={(e) => handleOnChange(e, 'middleName')} required/>
                 </div>
                 {debounceState && isFieldsDirty && middleName == '' && (
                   <span className='errors'>This field is required</span>
@@ -134,37 +159,27 @@ function Register() {
               <div>
                 <div className='form-group'>
                   <label>Last Name:</label>
-                  <input type='text' name='lastName' ref={lastNameRef} onChange={(e) => handleOnChange(e, 'lastName')} />
+                  <input type='text' name='lastName' ref={lastNameRef} onChange={(e) => handleOnChange(e, 'lastName')} required/>
                 </div>
                 {debounceState && isFieldsDirty && lastName == '' && (
                   <span className='errors'>This field is required</span>
                 )}
               </div>
 
-              <div>
-                <div className='form-group'>
-                  <label>Contact Number:</label>
-                  <input type='text' name='contactNo' ref={contactNoRef} onChange={(e) => handleOnChange(e, 'contactNo')} />
+                <div>
+                  <div className='form-group'>
+                    <label>Contact Number:</label>
+                    <input type='text' name='contactNo' ref={contactNoRef} onChange={(e) => handleOnChange(e, 'contactNo')} required/>
+                  </div>
+                  {debounceState && isFieldsDirty && contactNo == '' && (
+                    <span className='errors'>This field is required</span>
+                  )}
                 </div>
-                {debounceState && isFieldsDirty && contactNo == '' && (
-                  <span className='errors'>This field is required</span>
-                )}
-              </div>
-
-              <div>
-                <div className='form-group'>
-                  <label>Role:</label>
-                  <input type='text' name='role' ref={roleRef} onChange={(e) => handleOnChange(e, 'role')} />
-                </div>
-                {debounceState && isFieldsDirty && role == '' && (
-                  <span className='errors'>This field is required</span>
-                )}
-              </div>
 
               <div>
                 <div className='form-group'>
                   <label>Email:</label>
-                  <input type='text' name='email' ref={emailRef} onChange={(e) => handleOnChange(e, 'email')} />
+                  <input type='text' name='email' ref={emailRef} onChange={(e) => handleOnChange(e, 'email')} required/>
                   </div>
                   {debounceState && isFieldsDirty && email == '' && (
                     <span className='errors'>This field is required</span>
@@ -192,7 +207,7 @@ function Register() {
                     if (status === 'loading') {
                       return;
                     }
-                    if (email && password) {
+                    if (email && password && firstName && middleName && contactNo) {
                       handleRegister({
                         type: 'register',
                         user: { email, password, firstName,middleName,lastName,contactNo,role },
