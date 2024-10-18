@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url(../../../../public/background.png);
+  background-image: url(../../../../public/cinema-background.png);
   background-size: cover;
   object-fit: cover;
   background-position: center;
@@ -27,6 +27,10 @@
 .register-header{
   display: flex;
   flex-direction: column;
+}
+
+.register-header span{
+  color: hsl(214, 83%, 55%);
 }
 
 .register-header h1{
@@ -68,15 +72,15 @@ input{
 button{
   width: fill;
   padding: 10px 20px;
-  background-color: hsl(0, 100%, 60%);
-  border: 1px solid hsl(0, 100%, 60%);
+  background-color: hsl(216, 42%, 14%);
+  border: 1px solid hsl(216, 42%, 14%);
   border-radius: 10px;
   color: white;
 }
 
 .register-container a{
   text-decoration: none;
-  color: hsl(0, 100%, 60%);
+  color: hsl(214, 83%, 55%);
 }
 
 .form-group label {

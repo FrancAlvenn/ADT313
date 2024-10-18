@@ -66,6 +66,7 @@ function Login() {
       .then((res) => {
         console.log(res);
         localStorage.setItem('accessToken', res.data.access_token);
+        localStorage.setItem('user' , JSON.stringify(res.data.user));
         
         //show the alert message
         setIsError(false);
@@ -103,7 +104,7 @@ function Login() {
           <div className='form-container'>
 
             <div className='login-header'>
-              <h1>Welcome to MovieDB!</h1>
+              <h1>Welcome to Movie<span>DB</span>!</h1>
               <p>Unlock the world of movies, reviews, and exclusive content.</p>
             </div>
 

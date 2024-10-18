@@ -7,6 +7,8 @@ import Dashboard from './pages/Main/Dashboard/Dashboard';
 import Main from './pages/Main/Main';
 import Register from './pages/Public/Register/Register';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Catalog from './pages/Main/Catalog/Catalog';
+import Users from './pages/Main/Users/Users';
 
 
 const router = createBrowserRouter([
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
       {
         path: '/main/dashboard',
         element: <Dashboard />,
+      },
+      {
+        path: '/main/catalog',
+        element: <Catalog />,
+      },
+      {
+        path: '/main/users',
+        element: <Users />,
       },
     ],
   },

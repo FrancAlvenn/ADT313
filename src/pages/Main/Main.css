@@ -10,11 +10,15 @@
 .Main .container .outlet {
   flex-grow: 3;
   padding: 1rem;
+  background-color: hsl(216, 28%, 10%);
+  color: hsl(208, 100%, 97%);
 }
 .Main .container .navigation {
-  background-color: aliceblue;
-  padding-top: 40px;
+  background-color: hsl(216, 42%, 14%);
+  color: hsl(208, 100%, 97%);
+  padding-top: 25px;
   height: 100vh;
+  width: 230px;
 }
 .Main .container .navigation ul {
   list-style: none;
@@ -28,7 +32,9 @@
 }
 .Main .container .navigation ul li.active,
 .Main .container .navigation ul li:hover {
-  background: #ccc;
+  background: hsl(214, 83%, 55%);
+  scale: 1.1;
+  transition: all ease 0.3s;
 }
 .Main .container .navigation ul li a {
   text-decoration: none;
@@ -36,4 +42,102 @@
 
 .Main .container .navigation ul li.logout {
   cursor: pointer;
+}
+
+
+/* Admin Header */
+
+.header{
+  font-size: 25px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid hsl(214, 83%, 55%);
+}
+
+.header span{
+  color: hsl(214, 83%, 55%);
+}
+
+
+/* Admin Profile */
+
+.admin-profile{
+  padding: 0px 20px 20px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid hsl(215,5%,47%);
+  margin-bottom: 20px;
+}
+
+.admin-profile div{
+  display: flex;
+  gap: 10px;
+}
+
+
+.admin-profile .fas{
+  padding: 10px;
+  font-size: 15px;
+  background-color: hsl(208, 100%, 97%);
+  border-radius: 10px;
+  color: hsl(216, 42%, 14%);
+}
+
+.admin-profile .fa-right-from-bracket{
+  padding: 8px;
+  font-size: 13px;
+  background-color: hsl(215,5%,47%);
+  border-radius: 5px;
+  cursor: pointer;
+  color: hsl(208, 100%, 97%);
+}
+
+.admin-profile .user-info{
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-info h1{
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.user-info p{
+  margin: 0;
+  font-size: 8px;
+}
+
+.user-info p::first-letter{
+  text-transform: uppercase;
+}
+
+
+/* Admin Links */
+
+.admin-links{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-links li{
+  display: flex;
+  align-items: center;
+  color: black;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.admin-links span{
+  color: hsl(208, 100%, 97%);;
+}
+
+.admin-links li a{
+  color: hsl(208, 100%, 97%);;
 }

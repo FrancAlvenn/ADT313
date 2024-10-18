@@ -131,7 +131,7 @@ function Register() {
         <form>
           <div className='form-container'>
             <div className='register-header'>
-              <h1>Welcome to MovieDB!</h1>
+              <h1>Welcome to Movie<span>DB</span>!</h1>
               <p>Unlock the world of movies, reviews, and exclusive content.</p>
             </div>
             <div>
