@@ -12,6 +12,7 @@
   padding: 1rem;
   background-color: hsl(216, 28%, 10%);
   color: hsl(208, 100%, 97%);
+  overflow-y: scroll;
 }
 .Main .container .navigation {
   background-color: hsl(216, 42%, 14%);

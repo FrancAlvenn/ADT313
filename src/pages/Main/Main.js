@@ -44,7 +44,7 @@ function Main() {
             </li>
             <li>
               <span className='fas fa-film'></span>
-              <a href='/main/catalog'>Catalog</a>
+              <a href='/main/movies'>Movies</a>
             </li>
             <li>
               <span className='fas fa-user-circle'></span>

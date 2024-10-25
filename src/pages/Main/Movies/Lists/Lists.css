@@ -1,0 +1,99 @@
+.lists-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.create-container {
+  align-self: flex-end;
+  margin: 1rem 0;
+}
+
+.create-container button{
+  padding: 10px 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: hsl(214, 83%, 55%);
+  cursor: pointer;
+  color: hsl(208, 100%, 97%);
+}
+
+.table-container,
+.movie-lists {
+  width: 100%;
+}
+
+.table-container {
+  text-align: center;
+}
+
+.movie-header {
+  position: fixed;
+  top: 0;
+}
+
+.movie-lists {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.movie-lists tbody tr {
+  height: 40px;
+  background-color: hsl(216, 42%, 14%);
+}
+
+.movie-lists tbody tr{
+  background-color: hsl(216, 42%, 14%);
+}
+
+.movie-lists tbody td {
+  padding: 10px;
+  border: none;
+}
+
+.button-container{
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.button-container :first-child{
+  color: hsl(214, 83%, 55%);
+}
+
+.button-container :last-child{
+  color:hsl(0, 83%, 55%)
+}
+
+.button-container span{
+  cursor: pointer;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: hsl(216, 28%, 10%);
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltiptext{
+  font-family: 'Inter','Lucida Sans';
+  font-weight: 400;
+}

@@ -21,7 +21,7 @@ class VideosGateway
 
     public function create(array $data): string
     {
-        $sql = "INSERT INTO videos (movieId, userId, url, description) 
+        $sql = "INSERT INTO videos (movieId, userId, url, description)
                 VALUES (:movieId, :userId, :name, :url, :characterName)";
         $res = $this->conn->prepare($sql);
 

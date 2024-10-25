@@ -27,8 +27,6 @@ $codec = new JWTCodec;
 header("Access-Control-Allow-Origin: *");
 error_log(print_r("--------------------------------", true));
 //error_log(print_r($parts[2], true));
-error_log(print_r("Part 3: " . $parts[3], true));
-error_log(print_r("Part 4 franc: " . $parts[4], true));
 $auth = new Auth($user_gateway, $codec);
 if (($parts[3] !== 'user' && $parts[3] !== 'admin') && ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "DELETE" || $_SERVER["REQUEST_METHOD"] === "PATCH")) {
     //check access token if endpoint is not user and method are post, delete, patch

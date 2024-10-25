@@ -72,6 +72,7 @@ function Login() {
         setIsError(false);
         setAlertMessage(res.data.message);
         setTimeout(() => {
+          
           navigate('/main/dashboard');
           setStatus('idle');
         }, 3000);

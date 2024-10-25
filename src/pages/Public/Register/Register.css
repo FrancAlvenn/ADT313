@@ -69,7 +69,7 @@ input{
   z-index: 2;
 }
 
-button{
+.submit-container button{
   width: fill;
   padding: 10px 20px;
   background-color: hsl(216, 42%, 14%);

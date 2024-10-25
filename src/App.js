@@ -7,9 +7,10 @@ import Dashboard from './pages/Main/Dashboard/Dashboard';
 import Main from './pages/Main/Main';
 import Register from './pages/Public/Register/Register';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import Catalog from './pages/Main/Catalog/Catalog';
 import Users from './pages/Main/Users/Users';
-
+import Movies from './pages/Main/Movies/Movies';
+import Lists from './pages/Main/Movies/Lists/Lists';
+import Form from './pages/Main/Movies/Form/Form';
 
 const router = createBrowserRouter([
   {
@@ -37,8 +38,18 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: '/main/catalog',
-        element: <Catalog />,
+        path: '/main/movies',
+        element: <Movies />,
+        children: [
+          {
+            path: '/main/movies',
+            element: <Lists />,
+          },
+          {
+            path: '/main/movies/form/:movieId?',
+            element: <Form />,
+          },
+        ],
       },
       {
         path: '/main/users',
