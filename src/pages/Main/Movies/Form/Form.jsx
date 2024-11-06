@@ -10,7 +10,17 @@ const Form = () => {
   const [selectedMovie, setSelectedMovie] = useState(undefined);
   const [movie, setMovie] = useState(undefined);
   let { movieId } = useParams();
-  const [backgroundImage, setBackgroundImage] = useState('');
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    setSelectedMovie((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+
+    console.log(selectedMovie)
+  }
 
   //overlay
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -23,9 +33,13 @@ const Form = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
+  //alert box
+  const [alertMessage, setAlertMessage] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
 
+  const accessToken = localStorage.getItem('accessToken');
 
   // debounce function
   const debounce = (func, delay) => {
@@ -88,7 +102,6 @@ const Form = () => {
   };
 
   const handleSave = () => {
-    const accessToken = localStorage.getItem('accessToken');
     console.log(accessToken);
     if (selectedMovie === undefined) {
       // Add validation
@@ -115,13 +128,72 @@ const Form = () => {
         },
       })
       .then((saveResponse) => {
-        navigate('/main/movies');
         console.log(saveResponse);
-        alert('Success');
+        setIsError(false);
+        setAlertMessage(saveResponse.data.message);
+        setTimeout(() => {
+          setAlertMessage('');
+          navigate('/main/movies');
+        }, 3000);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        if(error.status === 422){
+          setIsError(true);
+          setAlertMessage(error.response.data.errors);
+          setTimeout(()=>{
+            setAlertMessage('');
+          }, 3000)
+        }else{
+          setIsError(true);
+          setAlertMessage("An error has occurred! Please try again later!");
+          setTimeout(()=>{
+            setAlertMessage('');
+          }, 3000)
+          console.log(error)
+        }
+      });
     }
   };
+
+  const handleUpdate = (id) => {
+    console.log(accessToken);
+    if (selectedMovie === undefined){
+
+    }else{
+      const data = {
+        tmdbId: selectedMovie.id,
+        title: selectedMovie.title,
+        overview: selectedMovie.overview,
+        popularity: selectedMovie.popularity,
+        releaseDate: selectedMovie.release_date,
+        voteAverage: selectedMovie.vote_average,
+        backdropPath: `https://image.tmdb.org/t/p/original/${selectedMovie.backdrop_path}`,
+        posterPath: `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`,
+        isFeatured: 0,
+      };
+      console.log(data)
+      axios({
+        method: 'patch',
+        url: `/movies/${id}`,
+        data: data,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((saveResponse) => {
+        console.log(saveResponse);
+        setIsError(false);
+        setAlertMessage(saveResponse.data.message);
+        setTimeout(() => {
+          setAlertMessage('');
+          navigate('/main/movies');
+        }, 3000);
+      })
+      .catch((error) => console.log(error));
+
+
+    }
+  }
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -130,8 +202,8 @@ const Form = () => {
       axios.get(`/movies/${movieId}`).then((response) => {
         setMovie(response.data);
         const tempData = {
-          id: response.data.tmdbId,
-          original_title: response.data.title,
+          tmdbId: response.data.id,
+          title: response.data.title,
           overview: response.data.overview,
           popularity: response.data.popularity,
           poster_path: response.data.posterPath,
@@ -139,8 +211,6 @@ const Form = () => {
           vote_average: response.data.voteAverage,
         };
         setSelectedMovie(tempData);
-        setBackgroundImage(tempData.poster_path);
-        console.log(response.data);
       }).catch(error => console.error("Error fetching movie data: ", error));
     }
 
@@ -155,6 +225,7 @@ const Form = () => {
   return (
     <>
       <div className="form-header">
+      {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
         <h1>{movieId !== undefined ? 'Edit ' : 'Create '} Movie</h1>
         {movieId === undefined && (
           <div className='search-container'>
@@ -206,8 +277,10 @@ const Form = () => {
               Title:
               <input
                 type='text'
-                value={selectedMovie ? selectedMovie.original_title : ''}
-                readOnly // Prevent editing of the title
+                value={selectedMovie ? selectedMovie.title : ''}
+                required
+                name='title'
+                onChange={handleOnChange}
               />
             </div>
             <div className='field text-area'>
@@ -215,15 +288,19 @@ const Form = () => {
               <textarea
                 rows={5}
                 value={selectedMovie ? selectedMovie.overview : ''}
-                readOnly // Prevent editing of the overview
+                required
+                name='overview'
+                onChange={handleOnChange}
               />
             </div>
             <div className='field'>
               Popularity:
               <input
-                type='text'
+                type='number'
                 value={selectedMovie ? selectedMovie.popularity : ''}
-                readOnly // Prevent editing of popularity
+                required
+                name='popularity'
+                onChange={handleOnChange}
               />
             </div>
             <div className='field'>
@@ -231,18 +308,22 @@ const Form = () => {
               <input
                 type='text'
                 value={selectedMovie ? selectedMovie.release_date : ''}
-                readOnly // Prevent editing of release date
+                required
+                name='release_date'
+                onChange={handleOnChange}
               />
             </div>
             <div className='field'>
               Vote Average:
               <input
-                type='text'
+                type='number'
                 value={selectedMovie ? selectedMovie.vote_average : ''}
-                readOnly // Prevent editing of vote average
+                required
+                name='vote_average'
+                onChange={handleOnChange}
               />
             </div>
-            <button type='button' onClick={handleSave}>
+            <button type='button' onClick={movieId !== undefined ? () => {handleUpdate(movieId)} : handleSave}>
               Save
             </button>
           </div>

@@ -26,6 +26,7 @@ code {
   background-color: hsl(140, 100%, 71%);
   color: white;
   transition: all ease 0.5s;
+  z-index: 1000;
 }
 
 .alert-box.success {

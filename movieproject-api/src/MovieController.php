@@ -267,6 +267,7 @@ class MovieController
             $errors[] = "Poster Image is required.";
         }
 
+
         return $errors;
     }
 }

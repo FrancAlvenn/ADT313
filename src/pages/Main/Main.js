@@ -3,6 +3,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import './Main.css';
 
 function Main() {
+
+  
   const accessToken = localStorage.getItem('accessToken');
 
   //get user information
@@ -27,6 +29,7 @@ function Main() {
 
   return (
     <div className='Main'>
+      
       <div className='container'>
         <div className='navigation'>
           <h1 className='header'>Movie<span>DB</span></h1>
