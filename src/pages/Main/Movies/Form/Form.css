@@ -133,7 +133,6 @@
 .movie-container form{
   display: flex;
   justify-content: space-between;
-  gap: 30px;
 }
 
 .movie-container form .col{
@@ -148,7 +147,7 @@
 .movie-details{
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 35px;
 }
   
 
@@ -170,6 +169,7 @@
 }
 
 .movie-details button{
+  max-width: 150px;
   padding: 10px;
   border-radius: 10px;
   background-color: hsl(214, 83%, 55%);

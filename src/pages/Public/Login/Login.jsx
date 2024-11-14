@@ -72,8 +72,11 @@ function Login() {
         setIsError(false);
         setAlertMessage(res.data.message);
         setTimeout(() => {
-          
-          navigate('/main/dashboard');
+          if (res.data.user.role === 'admin'){
+            navigate('/main/dashboard');
+          }else{
+            navigate('/main/movies'); // this is the user login
+          }
           setStatus('idle');
         }, 3000);
       })
