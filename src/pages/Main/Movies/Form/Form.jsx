@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
+import { useDebounce } from '../../../../utils/hooks/useDebounce';
 
 const Form = () => {
   const [query, setQuery] = useState('');
@@ -11,7 +12,13 @@ const Form = () => {
   const [movie, setMovie] = useState(undefined);
   let { movieId } = useParams();
 
+  const userInputDebounce = useDebounce({ selectedMovie }, 2000);
+  const [debounceState, setDebounceState] = useState(false);
+  const [isFieldsDirty, setIsFieldsDirty] = useState(false);
+
   const handleOnChange = (e) => {
+    setDebounceState(false);
+    setIsFieldsDirty(true);
     const { name, value } = e.target;
 
     setSelectedMovie((prevData) => ({
@@ -21,6 +28,11 @@ const Form = () => {
 
     console.log(selectedMovie)
   }
+
+  //debounce
+  useEffect(() => {
+    setDebounceState(true);
+  }, [userInputDebounce]);
 
   //overlay
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -282,6 +294,7 @@ const Form = () => {
                 name='title'
                 onChange={handleOnChange}
               />
+              {debounceState && isFieldsDirty && selectedMovie.title == '' && (<span className='errors'>This field is required</span>)}
             </div>
             <div className='field text-area'>
               <span>Overview:</span>
@@ -292,6 +305,7 @@ const Form = () => {
                 name='overview'
                 onChange={handleOnChange}
               />
+              {debounceState && isFieldsDirty && selectedMovie.overview == '' && (<span className='errors'>This field is required</span>)}
             </div>
             <div className='field'>
               Popularity:
@@ -302,6 +316,7 @@ const Form = () => {
                 name='popularity'
                 onChange={handleOnChange}
               />
+              {debounceState && isFieldsDirty && selectedMovie.popularity == '' && (<span className='errors'>This field is required</span>)}
             </div>
             <div className='field'>
               Release Date:
@@ -312,6 +327,7 @@ const Form = () => {
                 name='release_date'
                 onChange={handleOnChange}
               />
+              {debounceState && isFieldsDirty && selectedMovie.release_date == '' && (<span className='errors'>This field is required</span>)}
             </div>
             <div className='field'>
               Vote Average:
@@ -322,6 +338,7 @@ const Form = () => {
                 name='vote_average'
                 onChange={handleOnChange}
               />
+              {debounceState && isFieldsDirty && selectedMovie.vote_average == '' && (<span className='errors'>This field is required</span>)}
             </div>
             <button type='button' onClick={movieId !== undefined ? () => {handleUpdate(movieId)} : handleSave}>
               Save

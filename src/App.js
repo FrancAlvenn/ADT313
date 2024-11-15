@@ -1,4 +1,4 @@
-import * as React from 'react';
+ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
@@ -9,8 +9,10 @@ import Register from './pages/Public/Register/Register';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Users from './pages/Main/Users/Users';
 import Movies from './pages/Main/Movies/Movies';
-import Lists from './pages/Main/Movies/Lists/Lists';
-import Form from './pages/Main/Movies/Form/Form';
+import MovieLists from './pages/Main/Movies/Lists/Lists';
+import MovieForm from './pages/Main/Movies/Form/Form';
+import UsersLists from './pages/Main/Users/Lists/Lists';
+import UsersForm from './pages/Main/Users/Form/Form';
 
 const router = createBrowserRouter([
   {
@@ -43,17 +45,27 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/main/movies',
-            element: <Lists />,
+            element: <MovieLists />,
           },
           {
             path: '/main/movies/form/:movieId?',
-            element: <Form />,
+            element: <MovieForm />,
           },
         ],
       },
       {
         path: '/main/users',
         element: <Users />,
+        // children: [
+        //   {
+        //     path: '/main/users',
+        //     element: <UsersLists />
+        //   },
+        //   {
+        //     path: '/main/users/form/:userId?',
+        //     element: <UsersForm />
+        //   }
+        // ]
       },
     ],
   },
