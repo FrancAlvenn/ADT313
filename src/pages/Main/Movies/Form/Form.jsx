@@ -9,6 +9,16 @@ const Form = () => {
   const [query, setQuery] = useState('');
   const [searchedMovieList, setSearchedMovieList] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(undefined);
+
+  const titleRef = useRef();
+  const overviewRef = useRef();
+  const popularityRef = useRef();
+  const release_dateRef = useRef();
+  const vote_averageRef = useRef();
+  const posterRef = useRef();
+
+  const [status, setStatus] = useState('idle');
+
   const [movie, setMovie] = useState(undefined);
   let { movieId } = useParams();
 
@@ -23,7 +33,7 @@ const Form = () => {
 
     setSelectedMovie((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
 
     console.log(selectedMovie)
@@ -114,6 +124,7 @@ const Form = () => {
   };
 
   const handleSave = () => {
+    setStatus('loading');
     console.log(accessToken);
     if (selectedMovie === undefined) {
       // Add validation
@@ -168,6 +179,7 @@ const Form = () => {
   };
 
   const handleUpdate = (id) => {
+    setStatus('loading');
     console.log(accessToken);
     if (selectedMovie === undefined){
 
@@ -293,6 +305,7 @@ const Form = () => {
                 required
                 name='title'
                 onChange={handleOnChange}
+                ref={titleRef}
               />
               {debounceState && isFieldsDirty && selectedMovie.title == '' && (<span className='errors'>This field is required</span>)}
             </div>
@@ -304,6 +317,7 @@ const Form = () => {
                 required
                 name='overview'
                 onChange={handleOnChange}
+                ref={overviewRef}
               />
               {debounceState && isFieldsDirty && selectedMovie.overview == '' && (<span className='errors'>This field is required</span>)}
             </div>
@@ -315,6 +329,7 @@ const Form = () => {
                 required
                 name='popularity'
                 onChange={handleOnChange}
+                ref={popularityRef}
               />
               {debounceState && isFieldsDirty && selectedMovie.popularity == '' && (<span className='errors'>This field is required</span>)}
             </div>
@@ -326,6 +341,7 @@ const Form = () => {
                 required
                 name='release_date'
                 onChange={handleOnChange}
+                ref={release_dateRef}
               />
               {debounceState && isFieldsDirty && selectedMovie.release_date == '' && (<span className='errors'>This field is required</span>)}
             </div>
@@ -337,19 +353,52 @@ const Form = () => {
                 required
                 name='vote_average'
                 onChange={handleOnChange}
+                ref={vote_averageRef}
               />
               {debounceState && isFieldsDirty && selectedMovie.vote_average == '' && (<span className='errors'>This field is required</span>)}
             </div>
-            <button type='button' onClick={movieId !== undefined ? () => {handleUpdate(movieId)} : handleSave}>
-              Save
+            <button 
+              type='button'
+              disabled={status === 'loading'}
+              onClick={() => {
+                if (status === 'loading') {
+                  return;
+                }
+
+                const { title, overview, popularity, release_date, vote_average } = selectedMovie;
+
+                if (title && overview && popularity && release_date && vote_average) {
+                  movieId !== undefined ? handleUpdate(movieId) : handleSave()
+                } else {
+                  //fields are incomplete
+                  setIsFieldsDirty(true);
+
+                  //focus if field is empty
+                  if (!title) {
+                    titleRef.current.focus();
+                  } else if (!overview) {
+                    overviewRef.current.focus();
+                  } else if (!popularity) {
+                    popularityRef.current.focus();
+                  } else if (!release_date) {
+                    release_dateRef.current.focus();
+                  } else if (!vote_average) {
+                    vote_averageRef.current.focus();
+                  }
+                }
+              }}
+            >
+              {status === 'idle' ? 'SAVE' : 'LOADING'}
             </button>
           </div>
 
           <div className="col poster-col">
               <img
                 className='poster-image'
-                src={selectedMovie ? `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}` : `/movie-background.jpg`}
-                alt={`selectedMovie.original_title`}></img>
+                src={selectedMovie?.poster_path ? `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}` : `/movie-background.jpg`}
+                alt={`selectedMovie.original_title`}
+                ref={posterRef}
+                ></img>
           </div>
         </form>
       </div>
