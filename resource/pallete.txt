@@ -1,0 +1,31 @@
+Palette
+
+Black
+hsl(0, 0%, 0%)
+
+
+Gray
+hsl(215, 5%, 47%)
+
+
+Dark Blue
+hsl(216, 28%, 10%)
+
+
+Blue
+hsl(216, 42%, 14%)
+
+
+Light Blue
+hsl(214, 83%, 55%)
+
+
+White
+hsl(208, 100%, 97%)
+
+
+
+proxy: http://192.169.25.60/movieproject-api
+
+
+http://localhost/admin-dashboard-francalvenn-delacruz/movieproject-api

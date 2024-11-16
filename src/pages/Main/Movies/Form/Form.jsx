@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Outlet, useOutlet, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 import { useDebounce } from '../../../../utils/hooks/useDebounce';
+
 
 const Form = () => {
   const [query, setQuery] = useState('');
@@ -60,6 +61,7 @@ const Form = () => {
   const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
+  const outletContent = useOutlet();
 
   const accessToken = localStorage.getItem('accessToken');
 
@@ -226,6 +228,7 @@ const Form = () => {
       axios.get(`/movies/${movieId}`).then((response) => {
         setMovie(response.data);
         const tempData = {
+          id: response.data.tmdbId,
           tmdbId: response.data.id,
           title: response.data.title,
           overview: response.data.overview,
@@ -246,11 +249,112 @@ const Form = () => {
     };
   }, [movieId]);
 
+ 
+  let { tab } = useParams();
+  const [selectedTab, setSelectedTab] = useState('');
+
+  useEffect(()=>{
+    switch (tab) {
+      case 'cast-and-crews':
+        setSelectedTab('casts');
+        break;
+      case 'videos':
+        setSelectedTab('videos');
+        break;
+      case 'photos':
+        setSelectedTab('photos');
+        break;
+      default:
+        setSelectedTab('description');
+    }
+  },[tab])
+
+
   return (
     <>
       <div className="form-header">
-      {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
-        <h1>{movieId !== undefined ? 'Edit ' : 'Create '} Movie</h1>
+        {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
+        <div className='tabs-container'>
+          <span>
+            <h2>{movieId !== undefined ? 'Edit ' : 'Create '} Movie</h2>
+            <button 
+              type='button'
+              disabled={status === 'loading'}
+              onClick={() => {
+                if (status === 'loading') {
+                  return;
+                }
+
+                const { title, overview, popularity, release_date, vote_average } = selectedMovie;
+
+                if (title && overview && popularity && release_date && vote_average) {
+                  movieId !== undefined ? handleUpdate(movieId) : handleSave()
+                } else {
+                  //fields are incomplete
+                  setIsFieldsDirty(true);
+
+                  //focus if field is empty
+                  if (!title) {
+                    titleRef.current.focus();
+                  } else if (!overview) {
+                    overviewRef.current.focus();
+                  } else if (!popularity) {
+                    popularityRef.current.focus();
+                  } else if (!release_date) {
+                    release_dateRef.current.focus();
+                  } else if (!vote_average) {
+                    vote_averageRef.current.focus();
+                  }
+                }
+              }}
+            >
+              {status === 'idle' ? 'SAVE' : 'LOADING'}
+            </button>
+          </span>
+          {movieId !== undefined && selectedMovie && (
+          
+            <nav>
+              <div className='tabs'>
+                <li
+                  onClick={() => {
+                    navigate(`/main/movies/form/${movieId}`);
+                    setSelectedTab('description');
+                  }}
+                  className={selectedTab === 'description' ? 'active-tab' : ''}
+                >
+                  Description
+                </li>
+                <li
+                  onClick={() => {
+                    navigate(`/main/movies/form/${movieId}/cast-and-crews/${selectedMovie.id}`);
+                    setSelectedTab('casts');
+                  }}
+                  className={selectedTab === 'casts' ? 'active-tab' : ''}
+                >
+                  Cast & Crews
+                </li>
+                <li
+                  onClick={() => {
+                    navigate(`/main/movies/form/${movieId}/videos/${selectedMovie.id}`);
+                    setSelectedTab('videos');
+                  }}
+                  className={selectedTab === 'videos' ? 'active-tab' : ''}
+                >
+                  Videos
+                </li>
+                <li
+                  onClick={() => {
+                    navigate(`/main/movies/form/${movieId}/photos/${selectedMovie.id}`);
+                    setSelectedTab('photos');
+                  }}
+                  className={selectedTab === 'photos' ? 'active-tab' : ''}
+                >
+                  Photos
+                </li>
+              </div>
+            </nav>
+            )}
+        </div>
         {movieId === undefined && (
           <div className='search-container'>
             <input
@@ -294,7 +398,10 @@ const Form = () => {
         )}
       </div>
 
-      <div className='movie-container'>
+      {outletContent ? (
+        <Outlet/>
+      ) : (
+        <div className='movie-container'>
         <form>
           <div className="col movie-details">
             <div className='field'>
@@ -357,39 +464,7 @@ const Form = () => {
               />
               {debounceState && isFieldsDirty && selectedMovie.vote_average == '' && (<span className='errors'>This field is required</span>)}
             </div>
-            <button 
-              type='button'
-              disabled={status === 'loading'}
-              onClick={() => {
-                if (status === 'loading') {
-                  return;
-                }
-
-                const { title, overview, popularity, release_date, vote_average } = selectedMovie;
-
-                if (title && overview && popularity && release_date && vote_average) {
-                  movieId !== undefined ? handleUpdate(movieId) : handleSave()
-                } else {
-                  //fields are incomplete
-                  setIsFieldsDirty(true);
-
-                  //focus if field is empty
-                  if (!title) {
-                    titleRef.current.focus();
-                  } else if (!overview) {
-                    overviewRef.current.focus();
-                  } else if (!popularity) {
-                    popularityRef.current.focus();
-                  } else if (!release_date) {
-                    release_dateRef.current.focus();
-                  } else if (!vote_average) {
-                    vote_averageRef.current.focus();
-                  }
-                }
-              }}
-            >
-              {status === 'idle' ? 'SAVE' : 'LOADING'}
-            </button>
+            
           </div>
 
           <div className="col poster-col">
@@ -402,39 +477,9 @@ const Form = () => {
           </div>
         </form>
       </div>
-
-      {movieId !== undefined && selectedMovie && (
-        <div>
-          <hr />
-          <nav>
-            <ul className='tabs'>
-              <li
-                onClick={() => {
-                  navigate(`/main/movies/form/${movieId}/cast-and-crews`);
-                }}
-              >
-                Cast & Crews
-              </li>
-              <li
-                onClick={() => {
-                  navigate(`/main/movies/form/${movieId}/videos`);
-                }}
-              >
-                Videos
-              </li>
-              <li
-                onClick={() => {
-                  navigate(`/main/movies/form/${movieId}/photos`);
-                }}
-              >
-                Photos
-              </li>
-            </ul>
-          </nav>
-
-          {/* <Outlet /> */}
-        </div>
       )}
+
+      
     </>
   );
 };

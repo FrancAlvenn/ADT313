@@ -13,6 +13,9 @@ import MovieLists from './pages/Main/Movies/Lists/Lists';
 import MovieForm from './pages/Main/Movies/Form/Form';
 import UsersLists from './pages/Main/Users/Lists/Lists';
 import UsersForm from './pages/Main/Users/Form/Form';
+import Casts from './pages/Main/Movies/Form/Casts/Casts';
+import Videos from './pages/Main/Movies/Form/Videos/Videos';
+import Photos from './pages/Main/Movies/Form/Photos/Photos';
 
 const router = createBrowserRouter([
   {
@@ -36,20 +39,34 @@ const router = createBrowserRouter([
     element: <Main />,
     children: [
       {
-        path: '/main/dashboard',
+        path: 'dashboard',
         element: <Dashboard />,
       },
       {
-        path: '/main/movies',
+        path: 'movies',
         element: <Movies />,
         children: [
           {
-            path: '/main/movies',
+            path: '',
             element: <MovieLists />,
           },
           {
-            path: '/main/movies/form/:movieId?',
+            path: 'form/:movieId?/',
             element: <MovieForm />,
+            children: [
+              {
+                path: ':tab/:tmdbId?',
+                element: <Casts/>,
+              },
+              {
+                path: ':tab/:tmdbId?',
+                element: <Videos />,
+              },
+              {
+                path: ':tab/:tmdbId?',
+                element: <Photos />,
+              }
+            ]
           },
         ],
       },

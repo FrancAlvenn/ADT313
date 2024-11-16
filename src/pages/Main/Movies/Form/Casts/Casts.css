@@ -1,0 +1,73 @@
+.cast-cards-container {
+    position: relative; /* Needed for positioning the buttons */
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    padding: 20px 0px;
+    scrollbar-color: hsl(214, 83%, 55%) hsl(216, 28%, 10%) ;
+  }
+  
+  .cast-cards {
+    display: flex;
+    gap: 16px;
+    transition: transform 0.3s ease; /* Smooth transition for scrolling */
+  }
+  
+  .cast-card {
+    flex-shrink: 0;
+    width: 200px;
+    background-color: hsl(216, 42%, 14%);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .cast-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .cast-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .cast-info {
+    margin-top: 8px;
+  }
+  
+  .cast-info h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .cast-info p {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+  }
+  
+  .scroll-button-left {
+    left: 10px;
+  }
+  
+  .scroll-button-right {
+    right: 10px;
+  }
+  

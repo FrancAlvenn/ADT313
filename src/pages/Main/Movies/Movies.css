@@ -1,8 +1,14 @@
-.movies-header{
-    font-size: 25px;
-    font-weight: 600;
-    margin-top: 25px;
-    padding-left: 20px;
-    padding-bottom: 20px;
+.movies-header-container{
     border-bottom: 2px solid hsl(214, 83%, 55%);
+}
+
+.movies-header{
+    font-size: 35px;
+    font-weight: 600;
+    margin-top: 15px;
+    padding-left: 0px;
+    padding-bottom: 20px;
+    
+    cursor: pointer;
+    width: fit-content;
 }
