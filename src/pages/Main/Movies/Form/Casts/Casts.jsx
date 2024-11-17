@@ -10,19 +10,15 @@ function Casts() {
     const { auth } = useContext(AuthContext);
 
     let { tmdbId } = useParams();
+    let { movieId } = useParams();
+    const castCardsRef = useRef(null);
+
 
     const [castData, setCastData] = useState([]);
     const [crewData, setCrewData] = useState([]);
 
-    const castCardsRef = useRef(null);
-
-    const accessToken = localStorage.getItem('accessToken');
-
-
-    console.log(tmdbId)
     useEffect(() => {
         const data = {
-          
         }
         axios({
             method: 'get',
@@ -39,24 +35,39 @@ function Casts() {
     },[tmdbId])
 
 
-    useEffect(()=>{
+    function SaveCast(){
+
+        const data = {
+          userId: auth.user.userId,
+          movieId: movieId,
+          name: castData[0].name,
+          characterName: castData[0].character,
+          url: `https://image.tmdb.org/t/p/original/${castData[0].profile_path}`
+        }
+
+        console.log(data)
       
         axios({
-            method: 'post',
-            url: '/admin/casts',
+            method: 'POST',
+            url: '/casts',
+            data: data,
             headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer ${auth.accessToken}`
             }
         }).then((response) => {
-            console.log("Database Updated")
-        })
-    },[])
+            console.log("Database Updated", response)
+        }).catch((err => {
+          console.log(err)
+        }))
+    }
 
 
       return (
-        <div>
-          <h1>Casts</h1>
+        <div className='cast-and-crew-container'>
+          <div className='cast-and-crew-header'>
+            <h1>Casts</h1>
+            <button onClick={SaveCast}>ADD CAST</button>
+          </div>
           <div className="cast-cards-container">
             <div className="cast-cards" ref={castCardsRef}>
               {castData.map((cast) => (

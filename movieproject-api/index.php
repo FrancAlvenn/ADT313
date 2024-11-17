@@ -37,17 +37,73 @@ if (($parts[3] !== 'user' && $parts[3] !== 'admin') && ($_SERVER["REQUEST_METHOD
 
 switch ($parts[3]) {
     case 'admin':
-        //admin endpoint
+       //admin endpoint
         $action = $parts[4] ?? null;
         if ($action === null) {
             http_response_code(404);
         }
 
-        $gateway = new AdminGateway($database);
+        if($parts[4] === 'login' || $parts[4] === 'register') {
+            $gateway = new AdminGateway($database);
 
-        $controller = new AdminController($gateway);
-        $controller->processRequest($_SERVER["REQUEST_METHOD"], $action);
-        break;
+            $controller = new AdminController($gateway);
+            $controller->processRequest($_SERVER["REQUEST_METHOD"], $action);
+            break;
+        } else {
+            //authenticate access token
+            if(!$auth->authenticateAccessToken()) {
+                exit;
+            }
+            switch ($parts[4]) {
+                case 'movies':
+                    $id = $parts[5] ?? null;
+
+                    $gateway = new AdminMovieGateway($database); //database
+
+                    $controller = new AdminMovieController($gateway, $auth);
+                    $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
+                break;
+                
+
+                case 'casts':
+                    //casts endpoint
+                    $id = $parts[5] ?? null;
+                    $movieId = $parts[6] ?? null;
+
+
+                    $gateway = new AdminCastsGateway($database);
+
+                    $controller = new AdminCastsController($gateway, $auth);
+                    $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
+                    break;
+
+                case 'photos':
+                    $id = $parts[5] ?? null;
+                    $movieId = $parts[6] ?? null;
+
+
+                    $gateway = new PhotosGateway($database);
+            
+                    $controller = new PhotosController($gateway, $auth);
+                    $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
+                    break;
+
+                case 'videos':
+                    $id = $parts[5] ?? null;
+                    $movieId = $parts[6] ?? null;
+
+
+                    $gateway = new AdminVideosGateway($database);
+            
+                    $controller = new AdminVideosController($gateway, $auth);
+                    $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
+                    break;
+                    
+                default:
+                    http_response_code(404);
+                    break;
+            }
+        }
 
     case 'user':
         //user endpoint
@@ -89,6 +145,17 @@ switch ($parts[3]) {
         $gateway = new VideosGateway($database);
 
         $controller = new VideosController($gateway, $auth);
+        $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
+        break;
+
+    case 'casts':
+        //casts endpoint
+        $id = $parts[4] ?? null;
+
+
+        $gateway = new CastsGateway($database);
+
+        $controller = new CastsController($gateway, $auth);
         $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
         break;
 
