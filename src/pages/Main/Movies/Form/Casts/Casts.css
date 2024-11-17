@@ -5,16 +5,40 @@
   padding-right: 30px;
 }
 
-.cast-and-crew-header > button{
+.cast-and-crew-header > div > button{
   max-width: 150px;
-  width: 120px;
+  width: 150px;
   padding: 10px;
   border-radius: 30px;
   background-color: hsl(214, 83%, 55%);
   border: none;
   cursor: pointer;
+  margin-right: 10px;
 }
 
+
+.cast-and-crew-header > div{
+  display: flex;
+}
+
+.cast-and-crew-header > h2{
+  cursor: pointer;
+}
+
+.back-button{
+  margin-top: 7px;
+  margin-bottom: 5px;
+  font-size: 15px;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-button h3{
+  margin: 0;
+  font-family: 'Inter';
+}
 
 .cast-cards-container {
     position: relative;
@@ -68,25 +92,77 @@
     font-size: 14px;
     color: #777;
   }
-  
-  .scroll-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 2;
-  }
-  
-  .scroll-button-left {
-    left: 10px;
-  }
-  
-  .scroll-button-right {
-    right: 10px;
-  }
-  
+
+.cast-cards{
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.cast-cards-group{
+  display: flex;
+  gap: 20px;
+}
+
+.cast-cards form{
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+  margin-top: 30px;
+  margin: 0px 30px;
+}
+
+.casts-details{
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 50px;
+  width: fit-content;
+  min-width: 500px;
+}
+
+
+.casts-details .field input{
+  margin: 5px 0px;
+  background-color: hsl(216, 42%, 14%);
+  border: 1px solid hsl(216, 42%, 14%);
+  color: hsl(208, 100%, 97%);
+  width: 100%;
+}
+
+
+.cast-profile > .cast-image {
+  padding: 20px;
+  width:75%;
+  height: auto;
+  max-height: 500px;
+  object-fit: fill;
+  border-radius: 50px;
+}
+
+.button-group{
+  display: flex;
+  justify-content: end;
+  margin: 40px 0px;
+  gap: 20px;
+}
+
+.button-group > button{
+  max-width: 150px;
+  width: 150px;
+  padding: 10px;
+  border-radius: 30px;
+  background-color: hsl(214, 83%, 55%);
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+ .button-group > .delete-button{
+  background-color: hsl(0, 100%, 68%);
+}
+
+ .button-group{
+  display: flex;
+}

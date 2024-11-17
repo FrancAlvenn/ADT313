@@ -48,7 +48,7 @@ class CastsController
                 $rows = $this->gateway->update($cast, $data);
 
                 echo json_encode([
-                    "message" => "Cast $id updated.",
+                    "message" => "Cast $id updated successfully.",
                     "rows" => $rows
                 ]);
                 break;

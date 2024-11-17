@@ -161,7 +161,7 @@ const Form = () => {
         movieId: selectedMovie.id,
         name: castMember.name,
         characterName: castMember.character,
-        url: castMember.profile_path,
+        url: `https://image.tmdb.org/t/p/w500/${castMember.profile_path}`,
       };
       return axios.post('/casts', castPayload, {
         headers: {
