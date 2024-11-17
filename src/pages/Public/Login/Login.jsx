@@ -1,8 +1,9 @@
-import { useState, useRef, useCallback, useEffect, createContext } from 'react';
+import { useState, useRef, useCallback, useEffect, createContext, useContext } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../../utils/hooks/useDebounce';
 import axios from 'axios';
+import { AuthContext } from '../../../context/AuthContext';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -16,6 +17,9 @@ function Login() {
   const [status, setStatus] = useState('idle');
 
   const navigate = useNavigate();
+
+  //useContext to share user token and credentials
+  const { setAuthData } = useContext(AuthContext);
 
   //alert-box
   const [alertMessage, setAlertMessage] = useState('');
@@ -55,7 +59,7 @@ function Login() {
   const handleLogin = async () => {
     const data = { email, password };
     setStatus('loading');
-    console.log(data);
+
 
     await axios({
       method: 'post',
@@ -67,7 +71,11 @@ function Login() {
         console.log(res);
         localStorage.setItem('accessToken', res.data.access_token);
         localStorage.setItem('user' , JSON.stringify(res.data.user));
-        
+        //set the user auth and data
+        setAuthData({
+          accessToken: res.data.access_token,
+          user: res.data.user,
+        });
         //show the alert message
         setIsError(false);
         setAlertMessage(res.data.message);
@@ -94,6 +102,12 @@ function Login() {
         // alert(e.response.data.message);
       });
   };
+
+  const { auth } = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log('Auth State Updated:', auth);
+  }, [auth]);
 
   useEffect(() => {
     setDebounceState(true);

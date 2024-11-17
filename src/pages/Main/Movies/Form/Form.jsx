@@ -1,12 +1,17 @@
 import axios from 'axios';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Outlet, useOutlet, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 import { useDebounce } from '../../../../utils/hooks/useDebounce';
+import { AuthContext } from '../../../../context/AuthContext';
 
 
 const Form = () => {
+
+  //user token and information
+  const { auth } = useContext(AuthContext);
+
   const [query, setQuery] = useState('');
   const [searchedMovieList, setSearchedMovieList] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(undefined);
@@ -63,7 +68,6 @@ const Form = () => {
   const navigate = useNavigate();
   const outletContent = useOutlet();
 
-  const accessToken = localStorage.getItem('accessToken');
 
   // debounce function
   const debounce = (func, delay) => {
@@ -127,7 +131,6 @@ const Form = () => {
 
   const handleSave = () => {
     setStatus('loading');
-    console.log(accessToken);
     if (selectedMovie === undefined) {
       // Add validation
       alert('Please search and select a movie.');
@@ -149,7 +152,7 @@ const Form = () => {
         url: '/movies',
         data: data,
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${auth.accessToken}`,
         },
       })
       .then((saveResponse) => {
@@ -182,7 +185,6 @@ const Form = () => {
 
   const handleUpdate = (id) => {
     setStatus('loading');
-    console.log(accessToken);
     if (selectedMovie === undefined){
 
     }else{
@@ -203,7 +205,7 @@ const Form = () => {
         url: `/movies/${id}`,
         data: data,
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${auth.accessToken}`,
         },
       })
       .then((saveResponse) => {
@@ -250,7 +252,9 @@ const Form = () => {
   }, [movieId]);
 
  
-  let { tab } = useParams();
+  const path = window.location.pathname;
+  const parts = path.split('/');
+  const tab = parts[5] || 'description'
   const [selectedTab, setSelectedTab] = useState('');
 
   useEffect(()=>{
@@ -277,42 +281,82 @@ const Form = () => {
         <div className='tabs-container'>
           <span>
             <h2>{movieId !== undefined ? 'Edit ' : 'Create '} Movie</h2>
-            <button 
-              type='button'
-              disabled={status === 'loading'}
-              onClick={() => {
-                if (status === 'loading') {
-                  return;
-                }
-
-                const { title, overview, popularity, release_date, vote_average } = selectedMovie;
-
-                if (title && overview && popularity && release_date && vote_average) {
-                  movieId !== undefined ? handleUpdate(movieId) : handleSave()
-                } else {
-                  //fields are incomplete
-                  setIsFieldsDirty(true);
-
-                  //focus if field is empty
-                  if (!title) {
-                    titleRef.current.focus();
-                  } else if (!overview) {
-                    overviewRef.current.focus();
-                  } else if (!popularity) {
-                    popularityRef.current.focus();
-                  } else if (!release_date) {
-                    release_dateRef.current.focus();
-                  } else if (!vote_average) {
-                    vote_averageRef.current.focus();
+            <div className='tabs-container-group'>
+              {movieId === undefined && (
+                <div className='search-container'>
+                  <input
+                    type='text'
+                    onChange={handleInputChange}
+                    placeholder='Search movie'
+                  />
+                  <span className='fas fa-search' type='button' onClick={() => handleSearch(query)}></span>
+                  <div className={`searched-movie ${overlayVisible ? 'show' : ''}`} ref={overlayRef}>
+                    <div className='container'>
+                      <div className="movie-list">
+                        {searchedMovieList.map((movie) => (
+                            <p key={movie.id} onClick={() => handleSelectMovie(movie)}>
+                                {movie.original_title}
+                            </p>
+                        ))}
+                      </div>
+                      <div className="pagination">
+                          {currentPage > 1 && (
+                              <button onClick={() => {
+                                  const newPage = currentPage - 1;
+                                  setCurrentPage(newPage);
+                                  handleSearch(query, newPage);
+                              }}>
+                                <p className='fas fa-chevron-left'></p> Previous
+                              </button>
+                          )}
+                          {currentPage < totalPages && (
+                              <button onClick={() => {
+                                  const newPage = currentPage + 1;
+                                  setCurrentPage(newPage);
+                                  handleSearch(query, newPage);
+                              }}>
+                                  Next <p className='fas fa-chevron-right'></p>
+                              </button>
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <button
+                id='saveButton'
+                type='button'
+                disabled={status === 'loading'}
+                onClick={() => {
+                  if (status === 'loading') {
+                    return;
                   }
-                }
-              }}
-            >
-              {status === 'idle' ? 'SAVE' : 'LOADING'}
-            </button>
+                  const { title, overview, popularity, release_date, vote_average } = selectedMovie;
+                  if (title && overview && popularity && release_date && vote_average) {
+                    movieId !== undefined ? handleUpdate(movieId) : handleSave()
+                  } else {
+                    //fields are incomplete
+                    setIsFieldsDirty(true);
+                    //focus if field is empty
+                    if (!title) {
+                      titleRef.current.focus();
+                    } else if (!overview) {
+                      overviewRef.current.focus();
+                    } else if (!popularity) {
+                      popularityRef.current.focus();
+                    } else if (!release_date) {
+                      release_dateRef.current.focus();
+                    } else if (!vote_average) {
+                      vote_averageRef.current.focus();
+                    }
+                  }
+                }}
+              >
+                {status === 'idle' ? 'SAVE' : 'LOADING'}
+              </button>
+            </div>
           </span>
           {movieId !== undefined && selectedMovie && (
-          
             <nav>
               <div className='tabs'>
                 <li
@@ -355,47 +399,7 @@ const Form = () => {
             </nav>
             )}
         </div>
-        {movieId === undefined && (
-          <div className='search-container'>
-            <input
-              type='text'
-              onChange={handleInputChange}
-              placeholder='Search movie'
-            />
-            <span className='fas fa-search' type='button' onClick={() => handleSearch(query)}></span>
-            <div className={`searched-movie ${overlayVisible ? 'show' : ''}`} ref={overlayRef}>
-              <div className='container'>
-                <div className="movie-list">
-                  {searchedMovieList.map((movie) => (
-                      <p key={movie.id} onClick={() => handleSelectMovie(movie)}>
-                          {movie.original_title}
-                      </p>
-                  ))}
-                </div>
-                <div className="pagination">
-                    {currentPage > 1 && (
-                        <button onClick={() => {
-                            const newPage = currentPage - 1;
-                            setCurrentPage(newPage);
-                            handleSearch(query, newPage);
-                        }}>
-                           <p className='fas fa-chevron-left'></p> Previous
-                        </button>
-                    )}
-                    {currentPage < totalPages && (
-                        <button onClick={() => {
-                            const newPage = currentPage + 1;
-                            setCurrentPage(newPage);
-                            handleSearch(query, newPage);
-                        }}>
-                            Next <p className='fas fa-chevron-right'></p>
-                        </button>
-                    )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        
       </div>
 
       {outletContent ? (

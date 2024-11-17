@@ -5,6 +5,7 @@
     overflow-x: scroll;
     padding: 20px 0px;
     scrollbar-color: hsl(214, 83%, 55%) hsl(216, 28%, 10%) ;
+    width: 100%;
   }
   
   .cast-cards {

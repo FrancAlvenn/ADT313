@@ -16,6 +16,7 @@ import UsersForm from './pages/Main/Users/Form/Form';
 import Casts from './pages/Main/Movies/Form/Casts/Casts';
 import Videos from './pages/Main/Movies/Form/Videos/Videos';
 import Photos from './pages/Main/Movies/Form/Photos/Photos';
+import { AuthProvider } from './context/AuthContext';
 
 const router = createBrowserRouter([
   {
@@ -55,15 +56,15 @@ const router = createBrowserRouter([
             element: <MovieForm />,
             children: [
               {
-                path: ':tab/:tmdbId?',
+                path: 'cast-and-crews/:tmdbId?',
                 element: <Casts/>,
               },
               {
-                path: ':tab/:tmdbId?',
+                path: 'videos/:tmdbId?',
                 element: <Videos />,
               },
               {
-                path: ':tab/:tmdbId?',
+                path: 'photos/:tmdbId?',
                 element: <Photos />,
               }
             ]
@@ -90,9 +91,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
+    <AuthProvider>
     <div className='App'>
       <RouterProvider router={router} />
     </div>
+    </AuthProvider>
   );
 }
 

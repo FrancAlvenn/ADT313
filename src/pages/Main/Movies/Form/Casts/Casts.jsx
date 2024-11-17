@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import './Casts.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../../../../../context/AuthContext';
 
 function Casts() {
+
+    //user token and information
+    const { auth } = useContext(AuthContext);
 
     let { tmdbId } = useParams();
 
@@ -12,8 +16,14 @@ function Casts() {
 
     const castCardsRef = useRef(null);
 
+    const accessToken = localStorage.getItem('accessToken');
+
+
     console.log(tmdbId)
     useEffect(() => {
+        const data = {
+          
+        }
         axios({
             method: 'get',
             url: `https://api.themoviedb.org/3/movie/${tmdbId}/credits?language=en-US`,
@@ -27,6 +37,21 @@ function Casts() {
             console.log(response)
         })
     },[tmdbId])
+
+
+    useEffect(()=>{
+      
+        axios({
+            method: 'post',
+            url: '/admin/casts',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then((response) => {
+            console.log("Database Updated")
+        })
+    },[])
 
 
       return (

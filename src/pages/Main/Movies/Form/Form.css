@@ -29,6 +29,11 @@
   justify-content: space-between;
 }
 
+.tabs-container-group{
+  display: flex;
+  gap: 30px;
+}
+
 .tabs{
   display: flex;
   text-decoration: none;
@@ -56,7 +61,7 @@
   border-bottom: 4px solid hsl(214, 83%, 55%);
 }
 
-.tabs-container button{
+.tabs-container #saveButton{
   max-width: 150px;
   width: 120px;
   padding: 10px;
