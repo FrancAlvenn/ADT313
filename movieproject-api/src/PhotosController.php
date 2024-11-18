@@ -44,6 +44,38 @@ class PhotosController
                     echo json_encode(["errors" => $errors]);
                     break;
                 }
+                
+                //file upload for photo
+                if (!empty($_FILES['image']['name']) && $type == 'form') {
+                    $profile_path = $_FILES['image']['name'];
+                    $temp_path = $_FILES['image']['tmp_name'];
+                    $file_size = $_FILES['image']['size'];
+                    $temp = explode(".", $_FILES["image"]["name"]);
+                    $new_profile_path = $temp[0].round(microtime(true)) . '.' . end($temp);
+
+                    $upload_path = "uploads/photos/";
+                    $file_ext = strtolower(pathinfo($profile_path, PATHINFO_EXTENSION));
+
+                    $valid_extensions = array("jpeg", "jpg", "png", "gif");
+                    if (in_array($file_ext, $valid_extensions)) {
+                        if (!file_exists($upload_path . $new_profile_path)) {
+                            if ($file_size < 50000000 && empty($errors)) {
+                                $data['url'] = $upload_path . $new_profile_path;
+                                move_uploaded_file($temp_path, $upload_path . $new_profile_path);
+                            } else {
+                                $errors[] = "File size is too large, maximum file size is 5Mb";
+                                echo json_encode([
+                                    "message" => "File size is too large, maximum file size is 5Mb",
+                                ]);
+                            }
+                        } else {
+                            $errors[] = "File already exists in upload folder";
+                        }
+                    } else {
+                        $errors[] = "Invalid file format";
+                    }
+                }
+                
 
                 $rows = $this->gateway->update($cast, $data);
 
@@ -81,11 +113,14 @@ class PhotosController
                     $valid_extensions = array("jpeg", "jpg", "png", "gif");
                     if (in_array($file_ext, $valid_extensions)) {
                         if (!file_exists($upload_path . $new_profile_path)) {
-                            if ($file_size < 5000000 && empty($errors)) {
+                            if ($file_size < 50000000 && empty($errors)) {
                                 $data['url'] = $upload_path . $new_profile_path;
                                 move_uploaded_file($temp_path, $upload_path . $new_profile_path);
                             } else {
                                 $errors[] = "File size is too large, maximum file size is 5Mb";
+                                echo json_encode([
+                                    "message" => "File size is too large, maximum file size is 5Mb",
+                                ]);
                             }
                         } else {
                             $errors[] = "File already exists in upload folder";
@@ -125,6 +160,7 @@ class PhotosController
                 echo json_encode($this->gateway->getAll());
                 break;
 
+                
             case "POST":
                 $jsonData = (array) json_decode(file_get_contents("php://input"), true);
                 $data = $jsonData ? $jsonData : $_POST;

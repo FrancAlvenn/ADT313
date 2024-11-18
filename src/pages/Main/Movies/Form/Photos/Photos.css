@@ -1,0 +1,211 @@
+.photo-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+  }
+  
+  .photo-header > div > button{
+    max-width: 150px;
+    width: 150px;
+    padding: 10px;
+    border-radius: 30px;
+    background-color: hsl(214, 83%, 55%);
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  
+  .photo-header > div{
+    display: flex;
+  }
+  
+  .photo-header > h2{
+    cursor: pointer;
+  }
+  
+  .back-button{
+    margin-top: 7px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .back-button h3{
+    margin: 0;
+    font-family: 'Inter';
+  }
+  
+  .photo-cards-container {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      padding: 20px 0px;
+      scrollbar-color: hsl(214, 83%, 55%) hsl(216, 28%, 10%) ;
+      width: 100%;
+    }
+  
+    .photo-cards {
+      display: flex;
+      gap: 16px;
+      transition: transform 0.3s ease;
+    }
+  
+    .photo-card {
+      flex-shrink: 0;
+      width: 200px;
+      background-color: hsl(216, 42%, 14%);
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 10px;
+      transition: transform 0.3s ease-in-out;
+    }
+  
+    .photo-card:hover {
+      transform: scale(1.05);
+    }
+  
+    .photo-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .photo-info {
+      margin-top: 8px;
+    }
+    
+    .photo-info h3 {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .photo-info p {
+      font-size: 14px;
+      color: #777;
+    }
+  
+  .photo-cards{
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+  
+  .photo-cards-group{
+    display: flex;
+    gap: 20px;
+  }
+  
+  .photo-cards form{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    width: 100%;
+    margin: 0px 30px;
+  }
+  
+  .photos-details{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    gap: 30px;
+    width: fit-content;
+    min-width: 500px;
+  }
+  
+  .photos-details .field{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .photos-details .field input, textarea{
+    padding: 10px;
+    border-radius: 15px;
+}
+
+  #upload-label{
+    background-color: hsl(216, 42%, 14%);
+    color: white;
+    padding: 10px 195px 10px 20px;
+    border-radius: 0.3rem;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 1rem;
+    border-radius: 10px;
+}
+
+.photo-profile{
+    display: flex;
+    justify-content: end;
+    margin-right: 50px;
+}
+
+  .photo-profile > .photo-image {
+    padding: 20px;
+    width:75%;
+    height: auto;
+    max-height: 500px;
+    object-fit: fill;
+    border-radius: 50px;
+  }
+  
+  .button-group{
+    display: flex;
+    justify-content: end;
+    margin: 40px 0px;
+    gap: 20px;
+  }
+  
+  .button-group > button{
+    max-width: 150px;
+    width: 150px;
+    padding: 10px;
+    border-radius: 30px;
+    background-color: hsl(214, 83%, 55%);
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+   .button-group > .delete-button{
+    background-color: hsl(0, 100%, 68%);
+  }
+  
+   .button-group{
+    display: flex;
+  }
+
+
+  .remove-btn{
+    padding-left: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+  .remove-btn:hover{
+    scale: 1.1;
+    color: hsl(0, 100%, 68%);
+  }
+  
+
+  #file-name{
+    padding-left: 10px;
+    width: 450px;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #file-name-container{
+    display: flex;
+    align-items: center;
+  }

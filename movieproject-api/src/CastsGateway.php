@@ -10,14 +10,12 @@ class CastsGateway
 
     public function getAll(): array
     {
-        // Remove the WHERE condition to get all casts
         $sql = "SELECT * FROM casts";
         $res = $this->conn->prepare($sql);
-        // Execute the query
         $res->execute();
-        // Fetch all results (you likely want multiple records)
+
         $data = $res->fetchAll(PDO::FETCH_ASSOC);
-        // Return the result as an array of casts
+
         return $data;
     }
 
