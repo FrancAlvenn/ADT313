@@ -8,14 +8,13 @@ class VideosGateway
         $this->conn = $database->getConnection();
     }
 
-    public function getAll($movieId): array
+    public function getAll(): array
     {
-        $sql = "SELECT * FROM videos WHERE movieId = :movieId";
+        $sql = "SELECT * FROM videos";
         $res = $this->conn->prepare($sql);
-        $res->bindValue(":movieId",$data["movieId"], PDO::PARAM_INT);
 
         $res->execute();
-        $data = $res->fetch(PDO::FETCH_ASSOC);
+        $data = $res->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
 
