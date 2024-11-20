@@ -17,10 +17,6 @@
   }
   
   
-  .photo-header > div{
-    display: flex;
-  }
-  
   .photo-header > h2{
     cursor: pointer;
   }
@@ -131,15 +127,15 @@
     border-radius: 15px;
 }
 
-  #upload-label{
+.photos-details .field input{
     background-color: hsl(216, 42%, 14%);
     color: white;
     padding: 10px 195px 10px 20px;
-    border-radius: 0.3rem;
     font-size: 14px;
     cursor: pointer;
     margin-top: 1rem;
     border-radius: 10px;
+    border: none;
 }
 
 .photo-profile{

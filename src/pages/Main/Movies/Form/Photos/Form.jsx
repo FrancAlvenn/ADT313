@@ -13,6 +13,7 @@ function Form({ data, state, setState }) {
   const [file, setFile] = useState(null); // Use state to manage the file
   const fileRef = useRef();
   const descriptionRef = useRef();
+  const urlRef = useRef();
 
   const [status, setStatus] = useState('idle');
   const navigate = useNavigate();
@@ -54,19 +55,12 @@ function Form({ data, state, setState }) {
     }, [userInputDebounce]);
 
   const handleSave = async (event) => {
-    event.preventDefault();
-    if (!file) {
-      setIsError(true);
-      setAlertMessage('No file selected');
-      setTimeout(() => setAlertMessage(''), 2000);
-      return;
-    }
-
     const formData = new FormData();
     formData.append('userId', selectedData.userId);
     formData.append('movieId', tmdbId);
     formData.append('description', selectedData.description);
-    formData.append('image', file); // Use the state variable `file`
+    // formData.append('image', file); // Use the state variable `file`
+    formData.append('url', selectedData.url)
 
     const data = {
       userId: selectedData.userId,
@@ -103,14 +97,13 @@ function Form({ data, state, setState }) {
   };
 
   const handleUpdate = async (event) => {
-    event.preventDefault();
-
     const formData = new FormData();
     formData.append('id', selectedData.id)
     formData.append('userId', selectedData.userId);
     formData.append('movieId', tmdbId);
     formData.append('description', selectedData.description);
-    formData.append('image', file);
+    // formData.append('image', file);
+    formData.append('url', selectedData.url);
 
     const data = {
       id: selectedData.id,
@@ -150,6 +143,7 @@ function Form({ data, state, setState }) {
   const handleDelete = () => {
     console.log(selectedData);
     console.log(selectedData.id);
+    setStatus('loading')
     const isConfirmed = window.confirm('Are you sure you want to delete this photo?');
     if (isConfirmed) {
       axios({
@@ -190,17 +184,17 @@ function Form({ data, state, setState }) {
             <div className="field">
               Image
               <input
-                type="file"
+                type="text"
                 name="url"
-                ref={fileRef}
-                onChange={handleFileChange}
-                id='file-upload'
-                hidden
+                ref={urlRef}
+                onChange={handleOnChange}
+                // id='file-upload'
+                // hidden
               />
-              <label htmlFor="file-upload" id='upload-label'>Choose File</label>
-              {/* {debounceState && isFieldsDirty && (file == '') && (<span className='errors'>This field is required</span>)} */}
-              {file && <span id='file-name-container'><p id='file-name'>{file.name}</p><span className='fas fa-circle-xmark remove-btn' onClick={() => setFile('')}></span> 
-              </span>}
+              {/* <label htmlFor="file-upload" id='upload-label'>Choose File</label> */}
+              {debounceState && isFieldsDirty && (selectedData.url == '') && (<span className='errors'>This field is required</span>)}
+              {/* {file && <span id='file-name-container'><p id='file-name'>{file.name}</p><span className='fas fa-circle-xmark remove-btn' onClick={() => setFile('')}></span>  */}
+              {/* </span>} */}
               </div>
             <div className="field">
               Description
@@ -212,7 +206,7 @@ function Form({ data, state, setState }) {
                 ref={descriptionRef}
                 onChange={handleOnChange}
               />
-              {debounceState && isFieldsDirty && (selectedData.description = '') && (<span className='errors'>This field is required</span>)}
+              {debounceState && isFieldsDirty && (selectedData.description == '') && (<span className='errors'>This field is required</span>)}
             </div>
           </div>
           <div className="photo-profile">
@@ -230,7 +224,24 @@ function Form({ data, state, setState }) {
       </div>
       <div className="button-group">
         {state == 'update' && <button onClick={handleDelete} className='delete-button'>Delete</button>}
-        <button onClick={state == 'update' ? handleUpdate : handleSave}>Save</button>
+        <button onClick={() => {
+                  if (status === 'loading') {
+                    return;
+                  }
+                  const { url, description} = selectedData;
+                  if (url && description) {
+                    state == 'update' ? handleUpdate() : handleSave()
+                  } else {
+                    //fields are incomplete
+                    setIsFieldsDirty(true);
+                    //focus if field is empty
+                    if (!url) {
+                      urlRef.current.focus();
+                    } else if (!description) {
+                      descriptionRef.current.focus();
+                    }
+                  }
+                }}>Save</button>
       </div>
     </>
   );

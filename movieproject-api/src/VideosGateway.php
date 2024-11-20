@@ -46,14 +46,14 @@ class VideosGateway
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE videos SET movieId=:movieId, userId=:userId, url=:url, description=:description WHERE id =:id AND userId = :userId";
+        $sql = "UPDATE videos SET movieId=:movieId, url=:url, description=:description WHERE id =:id AND userId = :userId";
         $res = $this->conn->prepare($sql);
         $dateUpdated = (new DateTime())->getTimeStamp();
         $res->bindValue(":userId",$current["userId"], PDO::PARAM_INT);
         $res->bindValue(":movieId",$new["movieId"] ?? $current["movieId"], PDO::PARAM_INT);
         $res->bindValue(":url",$new["url"] ?? $current["url"], PDO::PARAM_STR);
         $res->bindValue(":description",$new["description"] ?? $current["description"], PDO::PARAM_STR);
-        $res->bindValue(":dateUpdated",$dateUpdated, PDO::PARAM_STR);
+        // $res->bindValue(":dateUpdated",$dateUpdated, PDO::PARAM_STR);
         $res->bindValue(":id", $current["id"], PDO::PARAM_INT);
 
         $res->execute();

@@ -1,11 +1,11 @@
-.cast-and-crew-header{
+.cast-header{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-right: 30px;
 }
 
-.cast-and-crew-header > div > button{
+.cast-header > div > button{
   max-width: 150px;
   width: 150px;
   padding: 10px;
@@ -17,11 +17,9 @@
 }
 
 
-.cast-and-crew-header > div{
-  display: flex;
-}
 
-.cast-and-crew-header > h2{
+
+.cast-header > h2{
   cursor: pointer;
 }
 
@@ -109,7 +107,6 @@
   justify-content: space-between;
   align-items: start;
   width: 100%;
-  margin-top: 30px;
   margin: 0px 30px;
 }
 
@@ -117,20 +114,37 @@
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-  gap: 50px;
+  gap: 30px;
   width: fit-content;
   min-width: 500px;
 }
 
-
-.casts-details .field input{
-  margin: 5px 0px;
-  background-color: hsl(216, 42%, 14%);
-  border: 1px solid hsl(216, 42%, 14%);
-  color: hsl(208, 100%, 97%);
-  width: 100%;
+.casts-details .field{
+  display: flex;
+  flex-direction: column;
 }
 
+.casts-details .field input, textarea{
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.casts-details .field input{
+  background-color: hsl(216, 42%, 14%);
+  color: white;
+  padding: 10px 195px 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 1rem;
+  border: none;
+}
+
+.cast-profile{
+  display: flex;
+  justify-content: end;
+  margin-right: 50px;
+}
 
 .cast-profile > .cast-image {
   padding: 20px;
@@ -165,4 +179,65 @@
 
  .button-group{
   display: flex;
+}
+
+
+.remove-btn{
+  padding-left: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.remove-btn:hover{
+  scale: 1.1;
+  color: hsl(0, 100%, 68%);
+}
+
+
+#file-name{
+  padding-left: 10px;
+  width: 450px;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#file-name-container{
+  display: flex;
+  align-items: center;
+}
+
+
+.cast-name{
+  font-size: 18px;
+  margin: 0;
+  margin: 10px 0px;
+}
+
+.cast-character-name{
+  color: hsl(215, 5%, 47%);
+  font-size: 12px;
+  margin: 0;
+}
+
+.control-group{
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.fa-edit{
+  color: hsl(214, 83%, 55%);
+  cursor: pointer;
+}
+
+.fa-trash-can{
+  color: hsl(0, 100%, 68%);
+  cursor: pointer;
+}
+
+.alert-box{
+  text-align: center!important;
 }

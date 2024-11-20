@@ -16,11 +16,6 @@
     margin-right: 10px;
   }
   
-  
-  .video-header > div{
-    display: flex;
-  }
-  
   .video-header > h2{
     cursor: pointer;
   }
