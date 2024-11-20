@@ -46,6 +46,7 @@ function Form({ data, state, setState }) {
     }));
 
     console.log(selectedData);
+    
   };
 
   //debounce
@@ -53,20 +54,35 @@ function Form({ data, state, setState }) {
       setDebounceState(true);
     }, [userInputDebounce]);
 
-  const handleSave = async (event) => {
-    event.preventDefault();
-    if (!file) {
-      setIsError(true);
-      setAlertMessage('No file selected');
-      setTimeout(() => setAlertMessage(''), 2000);
-      return;
+  function convertToEmbedUrl(youtubeUrl) {
+
+    const videoIdMatch = youtubeUrl.match(/v=([^&]+)/);
+
+    if (videoIdMatch && videoIdMatch[1]) {
+      const videoId = videoIdMatch[1];
+
+      return `https://www.youtube.com/embed/${videoId}`;
+    } else {
+      // Return the original URL if it doesn't match the pattern
+      return youtubeUrl;
     }
+  }
+
+  const handleSave = async (event) => {
+    //event.preventDefault();
+    // if (!file) {
+    //   setIsError(true);
+    //   setAlertMessage('No file selected');
+    //   setTimeout(() => setAlertMessage(''), 2000);
+    //   return;
+    // }
 
     const formData = new FormData();
     formData.append('userId', selectedData.userId);
     formData.append('movieId', tmdbId);
     formData.append('description', selectedData.description);
-    formData.append('image', file); // Use the state variable `file`
+    // formData.append('video', file); // Use the state variable `file`
+    formData.append('url', convertToEmbedUrl(selectedData.url));
 
     const data = {
       userId: selectedData.userId,
@@ -75,6 +91,7 @@ function Form({ data, state, setState }) {
       image: file
     }
 
+    console.log(file)
 
     axios({
       method: 'post',
@@ -97,7 +114,7 @@ function Form({ data, state, setState }) {
       .catch((error) => {
         console.log(error.response);
         setIsError(true);
-        setAlertMessage(error.response?.data?.errors[0]);
+        setAlertMessage(error.response?.data?.errors[0] || error.response?.data);
         setTimeout(() => setAlertMessage(''), 2000);
       });
   };
@@ -110,7 +127,8 @@ function Form({ data, state, setState }) {
     formData.append('userId', selectedData.userId);
     formData.append('movieId', tmdbId);
     formData.append('description', selectedData.description);
-    formData.append('image', file);
+    formData.append('url', file);
+    
 
     const data = {
       id: selectedData.id,
@@ -183,24 +201,20 @@ function Form({ data, state, setState }) {
       {alertMessage && (
         <div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>
       )}
-      <div className="Video-cards">
+      <div className="video-cards">
         <form>
-          <div className="Videos-details">
+          <div className="videos-details">
               
             <div className="field">
               Image
               <input
-                type="file"
+                type="text"
                 name="url"
+                value={selectedData.url}
                 ref={fileRef}
-                onChange={handleFileChange}
-                id='file-upload'
-                hidden
+                onChange={handleOnChange}
               />
-              <label htmlFor="file-upload" id='upload-label'>Choose File</label>
-              {/* {debounceState && isFieldsDirty && (file == '') && (<span className='errors'>This field is required</span>)} */}
-              {file && <span id='file-name-container'><p id='file-name'>{file.name}</p><span className='fas fa-circle-xmark remove-btn' onClick={() => setFile('')}></span> 
-              </span>}
+              {debounceState && isFieldsDirty && (selectedData.url == '') && (<span className='errors'>This field is required</span>)}
               </div>
             <div className="field">
               Description
@@ -215,16 +229,17 @@ function Form({ data, state, setState }) {
               {debounceState && isFieldsDirty && (selectedData.description = '') && (<span className='errors'>This field is required</span>)}
             </div>
           </div>
-          <div className="Video-profile">
-            <img
-              src={
-                selectedData.url && !selectedData.url.includes('null')
-                  ? selectedData.url
-                  : 'https://via.placeholder.com/700x400?text=No+Image'
-              }
-              alt={selectedData.description}
-              className="Video-image"
-            />
+          <div className="video-profile">
+            <iframe
+                src={
+                  selectedData.url && !selectedData.url.includes("null")
+                    ? convertToEmbedUrl(selectedData.url)
+                    : 'https://via.placeholder.com/550x300?text=No+Video'
+                  }
+                  className="video-frame"
+                  allowFullScreen
+                >
+            </iframe>
           </div>
         </form>
       </div>

@@ -85,13 +85,13 @@ class VideosController
                                 $data['url'] = $upload_path . $new_profile_path;
                                 move_uploaded_file($temp_path, $upload_path . $new_profile_path);
                             } else {
-                                $errors[] = "File size is too large, maximum file size is 5Mb";
+                                $errors[] = "File size is too large, maximum file size is 5Mbs";
                             }
                         } else {
                             $errors[] = "File already exists in upload folder";
                         }
                     } else {
-                        $errors[] = "Invalid file format";
+                        $errors[] = "Invalid file format!";
                     }
                 } 
                 
@@ -190,9 +190,9 @@ class VideosController
             $errors[] = "Movie ID is required.";
         }
 
-        if ($is_new && empty($data["url"])) {
-            $errors[] = "Video URL is required.";
-        }
+        // if ($is_new && empty($data["url"])) {
+        //     $errors[] = "Video URL is required.";
+        // }
 
         return $errors;
     }

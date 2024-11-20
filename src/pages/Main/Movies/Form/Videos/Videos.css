@@ -131,6 +131,17 @@
     border-radius: 15px;
 }
 
+  .videos-details .field input{
+    background-color: hsl(216, 42%, 14%);
+    color: white;
+    padding: 10px 10px 10px 20px;
+    border-radius: 0.3rem;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 1rem;
+    border: none;
+  }
+
   #upload-label{
     background-color: hsl(216, 42%, 14%);
     color: white;
@@ -196,16 +207,20 @@
   }
   
 
-  #file-name{
-    padding-left: 10px;
-    width: 450px;
-    overflow: hidden;
-    flex-wrap: nowrap;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .video-frame {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: none;
   }
 
-  #file-name-container{
-    display: flex;
-    align-items: center;
+  .video-profile > .video-frame {
+    padding: 20px;
+    max-width: 550px;
+    width: 100vh;
+    height: 300px;
+    max-height: 500px;
+    object-fit: fill;
+    border-radius: 50px;
   }

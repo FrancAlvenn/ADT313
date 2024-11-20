@@ -47,15 +47,17 @@ function Videos() {
         {videoData?.map((video) => (
           video.movieId === parseInt(tmdbId) && (
             <div key={video.id} className="video-card" onClick={() => {setSelectedVideo(video); setState('update')}}>
-              <img
-                src={
-                  video.url && !video.url.includes("null")
-                    ? video.url
-                    : 'https://via.placeholder.com/500x750?text=No+Video'
-                }
-                alt={video.description}
-                className="video-image"
-              />
+                <span onClick={() => {setSelectedVideo(video); setState('update')}}>Edit</span>
+                <iframe
+                  src={
+                    video.url && !video.url.includes("null")
+                      ? video.url
+                      : 'https://via.placeholder.com/500x300?text=No+Video'
+                    }
+                    className="video-frame"
+                    allowFullScreen
+                  >
+                </iframe>
             </div>
           )
         ))}
