@@ -3,7 +3,7 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../../utils/hooks/useDebounce';
 import axios from 'axios';
-import { AuthContext } from '../../../context/AuthContext';
+import { AppContext } from '../../../context/AppContext';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -19,7 +19,7 @@ function Login() {
   const navigate = useNavigate();
 
   //useContext to share user token and credentials
-  const { setAuthData } = useContext(AuthContext);
+  const { setAuthData } = useContext(AppContext);
 
   //alert-box
   const [alertMessage, setAlertMessage] = useState('');
@@ -103,7 +103,7 @@ function Login() {
       });
   };
 
-  const { auth } = useContext(AuthContext);
+  const { auth } = useContext(AppContext);
 
   useEffect(() => {
     console.log('Auth State Updated:', auth);

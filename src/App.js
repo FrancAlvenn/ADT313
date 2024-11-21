@@ -7,16 +7,13 @@ import Dashboard from './pages/Main/Dashboard/Dashboard';
 import Main from './pages/Main/Main';
 import Register from './pages/Public/Register/Register';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import Users from './pages/Main/Users/Users';
 import Movies from './pages/Main/Movies/Movies';
 import MovieLists from './pages/Main/Movies/Lists/Lists';
 import MovieForm from './pages/Main/Movies/Form/Form';
-import UsersLists from './pages/Main/Users/Lists/Lists';
-import UsersForm from './pages/Main/Users/Form/Form';
 import Casts from './pages/Main/Movies/Form/Casts/Casts';
 import Videos from './pages/Main/Movies/Form/Videos/Videos';
 import Photos from './pages/Main/Movies/Form/Photos/Photos';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AppContext';
 
 const router = createBrowserRouter([
   {
@@ -70,20 +67,6 @@ const router = createBrowserRouter([
             ]
           },
         ],
-      },
-      {
-        path: '/main/users',
-        element: <Users />,
-        // children: [
-        //   {
-        //     path: '/main/users',
-        //     element: <UsersLists />
-        //   },
-        //   {
-        //     path: '/main/users/form/:userId?',
-        //     element: <UsersForm />
-        //   }
-        // ]
       },
     ],
   },

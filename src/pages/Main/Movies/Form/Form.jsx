@@ -4,13 +4,13 @@ import { Outlet, useOutlet, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 import { useDebounce } from '../../../../utils/hooks/useDebounce';
-import { AuthContext } from '../../../../context/AuthContext';
+import { AppContext } from '../../../../context/AppContext';
 
 
 const Form = () => {
 
   //user token and information
-  const { auth } = useContext(AuthContext);
+  const { auth } = useContext(AppContext);
 
   const [query, setQuery] = useState('');
   const [searchedMovieList, setSearchedMovieList] = useState([]);
@@ -381,7 +381,7 @@ const Form = () => {
                   }}
                   className={selectedTab === 'casts' ? 'active-tab' : ''}
                 >
-                  Cast & Crews
+                  Casts
                 </li>
                 <li
                   onClick={() => {

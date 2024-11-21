@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Main.css';
+import { AppContext } from '../../context/AppContext';
 
 function Main() {
 
-  
-  const accessToken = localStorage.getItem('accessToken');
+  //user token and information
+  const { auth } = useContext(AppContext);
 
   //get user information
-  const userInformation = JSON.parse(localStorage.getItem('user'));
+  // const userInformation = JSON.parse(localStorage.getItem('user'));
 
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -19,9 +20,9 @@ function Main() {
 
   useEffect(() => {
     if (
-      accessToken === undefined ||
-      accessToken === '' ||
-      accessToken === null
+      auth.accessToken === undefined ||
+      auth.accessToken === '' ||
+      auth.accessToken === null
     ) {
       handleLogout();
     }
@@ -36,7 +37,7 @@ function Main() {
           <div className='admin-profile'>
             <div>
               <span className='fas fa-user'></span>
-              <span className='user-info'><p>{userInformation.role}</p><h1>{userInformation.firstName}</h1></span>
+              <span className='user-info'><p>{auth.user.role}</p><h1>{auth.user.firstName}</h1></span>
             </div>
             <a onClick={handleLogout} className='fas fa-right-from-bracket'></a>
           </div>
@@ -48,10 +49,6 @@ function Main() {
             <li>
               <span className='fas fa-film'></span>
               <a href='/main/movies'>Movies</a>
-            </li>
-            <li>
-              <span className='fas fa-user-circle'></span>
-              <a href='/main/users'>Users</a>
             </li>
             <li className='logout'>
               <span className='fas fa-right-from-bracket'></span>

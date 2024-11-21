@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import './Photos.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDebounce } from '../../../../../utils/hooks/useDebounce';
-import { AuthContext } from '../../../../../context/AuthContext';
+import { AppContext } from '../../../../../context/AppContext';
 import axios from 'axios';
 
 function Form({ data, state, setState }) {
-  const { auth } = useContext(AuthContext);
+  const { auth } = useContext(AppContext);
   let { tmdbId, movieId } = useParams();
 
   const [selectedData, setSelectedData] = useState(data);

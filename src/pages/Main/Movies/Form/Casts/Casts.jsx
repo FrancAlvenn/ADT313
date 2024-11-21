@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import './Casts.css'
 import { useNavigate, useParams } from 'react-router-dom';
-import { AuthContext } from '../../../../../context/AuthContext';
+import { AppContext } from '../../../../../context/AppContext';
 import { useDebounce } from '../../../../../utils/hooks/useDebounce';
 import axios from 'axios';
 import Form from './Form';
 
 function Casts() {
 
-  const { auth } = useContext( AuthContext );
+  const { auth } = useContext( AppContext );
 
   let { tmdbId } = useParams();
   let { movieId } = useParams();

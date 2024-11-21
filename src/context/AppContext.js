@@ -1,12 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
 
-export const AuthContext = createContext();
+export const AppContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     accessToken: localStorage.getItem('accessToken') || null,
     user: JSON.parse(localStorage.getItem('user')) || null,
   });
+  
 
   const setAuthData = (data) => {
     setAuth({
@@ -25,14 +26,27 @@ export const AuthProvider = ({ children }) => {
       user: null,
     });
 
+    setMovie(null);
+
     // Remove from localStorage
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
   };
 
+  // Movie-related state
+  const [movie, setMovie] = useState(null);
+
+  const setMovieData = (movieData) => {
+    setMovie(movieData);
+  };
+
+  const clearMovieData = () => {
+    setMovie(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, setAuthData, clearAuthData }}>
+    <AppContext.Provider value={{ auth, setAuthData, clearAuthData, movie, setMovieData}}>
       {children}
-    </AuthContext.Provider>
+    </AppContext.Provider>
   );
 };

@@ -1,16 +1,29 @@
 import { useNavigate } from 'react-router-dom';
 import './Lists.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { AppContext } from '../../../../context/AppContext';
+
+
 const Lists = () => {
-  const accessToken = localStorage.getItem('accessToken');
+
+  //user token and information
+  const { auth } = useContext(AppContext);
+  const { movie } = useContext(AppContext);
+  const {setMovieData} = useContext(AppContext);
+
   const navigate = useNavigate();
   const [lists, setLists] = useState([]);
+
+  // alert box state
+  const [alertMessage, setAlertMessage] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const getMovies = () => {
     //get the movies from the api or database
     axios.get('/movies').then((response) => {
       setLists(response.data);
+      setMovieData(response.data);
     });
   };
   useEffect(() => {
@@ -25,10 +38,10 @@ const Lists = () => {
       axios
         .delete(`/movies/${id}`, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${auth.accessToken}`,
           },
         })
-        .then(() => {
+        .then((response) => {
           //update list by modifying the movie list array
           const tempLists = [...lists];
           const index = lists.findIndex((movie) => movie.id === id);
@@ -36,15 +49,27 @@ const Lists = () => {
             tempLists.splice(index, 1);
             setLists(tempLists);
           }
+          setIsError(false);
+          setAlertMessage(response.data.message);
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 2000);
 
           //update list by requesting again to api
           // getMovies();
-        });
+        }).catch((error) => {
+          setIsError(true);
+          setAlertMessage(error.data.message);
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 2000);
+        })
     }
   };
 
   return (
     <div className='lists-container'>
+      {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
       <div className='create-container'>
         <button
           type='button'
