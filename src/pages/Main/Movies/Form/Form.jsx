@@ -123,8 +123,6 @@ const Form = () => {
   const handleSelectMovie = (movie) => {
     setSelectedMovie(movie);
     setOverlayVisible(false);
-    //get Casts
-    getCasts(movie.id);
   };
 
   //handle click outside of overlay
@@ -133,44 +131,6 @@ const Form = () => {
       setOverlayVisible(false);
     }
   };
-
-
-  //HANDLE SAVE CASTS
-
-  const [castData, setCastData] = useState([]);
-  //const [crewData, setCrewData] = useState([]);
-
-  function getCasts(movieId){
-      axios({
-          method: 'get',
-          url: `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`,
-          headers: {
-              Accept: 'application/json',
-              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlN2FhNTRiYzJhNzI2MTFlZjY3MDAxZDllYjVkNThkMyIsIm5iZiI6MTcyOTI5NzUwNi40MzA0MTYsInN1YiI6IjY3MTJmYTU3MTZjYWE4YjBmMDljN2U1NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.prLBCxZWKAzfnbc5pboPiBEiHNWu4j8csiGBO2Af7x4', // Make sure to replace this with your actual API key
-            },
-      }).then((response) => {
-          setCastData(response.data.cast)
-          //setCrewData(response.data.crew)
-      })
-  }
-
-  async function saveCasts(){
-    await Promise.all(castData.map(castMember => {
-      const castPayload = {
-        userId: auth.user.userId,
-        movieId: selectedMovie.id,
-        name: castMember.name,
-        characterName: castMember.character,
-        url: `https://image.tmdb.org/t/p/w500/${castMember.profile_path}`,
-      };
-      return axios.post('/casts', castPayload, {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      });
-    }));
-  }
 
 
   //handle Save movie
@@ -204,11 +164,6 @@ const Form = () => {
         console.log(saveResponse);
         setIsError(false);
         setAlertMessage(saveResponse.data.message);
-
-        //save casts, videos, photos, etc
-        saveCasts();
-
-
         setTimeout(() => {
           setAlertMessage('');
           navigate('/main/movies');

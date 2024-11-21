@@ -85,6 +85,8 @@ function Form({ data, state, setState }) {
     formData.append('movieId', tmdbId);
     formData.append('description', selectedData.description);
     // formData.append('cast', file); // Use the state variable `file`
+    formData.append('name', selectedData.name);
+    formData.append('characterName', selectedData.characterName);
     formData.append('url', convertToEmbedUrl(selectedData.url));
 
     const data = {
@@ -133,14 +135,17 @@ function Form({ data, state, setState }) {
     formData.append('movieId', tmdbId);
     formData.append('description', selectedData.description);
     formData.append('url', selectedData.url);
-    
+    formData.append('name', selectedData.name);
+    formData.append('characterName', selectedData.characterName);
 
     const data = {
       id: selectedData.id,
       userId: selectedData.userId,
       movieI: tmdbId,
+      name: selectedData.name,
+      characterName: selectedData.characterName,
       description: selectedData.description,
-      image: file
+      url: selectedData.url
     }
 
     console.log(selectedData)
@@ -261,11 +266,12 @@ function Form({ data, state, setState }) {
       <div className="button-group">
         {state == 'update' && <button onClick={handleDelete} className='delete-button'>Delete</button>}
         <button onClick={() => {
+                  console.log(status);
                   if (status === 'loading') {
                     return;
                   }
-                  const { url, description} = selectedData;
-                  if (url && description) {
+                  const { url, name, characterName} = selectedData;
+                  if (url && name && characterName) {
                     state == 'update' ? handleUpdate() : handleSave()
                   } else {
                     //fields are incomplete
@@ -273,9 +279,9 @@ function Form({ data, state, setState }) {
                     //focus if field is empty
                     if (!url) {
                       urlRef.current.focus();
-                    } else if (!description) {
+                    } else if (!nameRef) {
                       nameRef.current.focus();
-                    } else if (!description) {
+                    } else if (!characterNameRef) {
                       characterNameRef.current.focus();
                     }
                   }

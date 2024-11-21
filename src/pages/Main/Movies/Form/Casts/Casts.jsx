@@ -40,6 +40,54 @@ function Casts() {
   })
   }
 
+//IMPORT FUNCTION
+  function importCasts(){
+      axios({
+          method: 'get',
+          url: `https://api.themoviedb.org/3/movie/${tmdbId}/credits?language=en-US`,
+          headers: {
+              Accept: 'application/json',
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlN2FhNTRiYzJhNzI2MTFlZjY3MDAxZDllYjVkNThkMyIsIm5iZiI6MTcyOTI5NzUwNi40MzA0MTYsInN1YiI6IjY3MTJmYTU3MTZjYWE4YjBmMDljN2U1NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.prLBCxZWKAzfnbc5pboPiBEiHNWu4j8csiGBO2Af7x4', // Make sure to replace this with your actual API key
+            },
+      }).then((response) => {
+          saveImportedCasts(response.data.cast);
+
+          setIsError(false);
+          setAlertMessage(`Successfully Imported ${response.data.cast.length} Casts`);
+          setTimeout(() => {
+            setAlertMessage('')
+            getAll();
+          }, 2000);
+
+      })
+  }
+
+  async function saveImportedCasts(importedData) {
+    console.log(importedData)
+    await Promise.all(importedData.map(async (data) => {
+      const payload = {
+        userId: auth.user.userId,
+        movieId: tmdbId,
+        name: data.name,
+        characterName: data.character,
+        url: `https://image.tmdb.org/t/p/w500/${data.profile_path}`,
+      };
+      console.log('Sending payload:', payload);
+      try {
+        const response = await axios.post('/casts', payload, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        });
+        console.log('Response:', response);
+      } catch (error) {
+        console.error('Error sending cast data:', error);
+      }
+    }));
+    console.log('Done!');
+  }
+
   const handleDelete = (id) => {
     const isConfirmed = window.confirm('Are you sure you want to delete this cast?');
     if (isConfirmed) {
@@ -69,6 +117,7 @@ function Casts() {
         });
     }
   };
+  
 
   
 
@@ -78,6 +127,7 @@ function Casts() {
       {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
       <h2 onClick={() => setState('base')}>{state != 'base' ? <span className='back-button fas fa-chevron-left'><h3>Back to Casts</h3></span> :  'Casts'}</h2>
       <div>
+        <button onClick={importCasts}>IMPORT CASTS</button>
         {state == 'base' && <button onClick={()=>setState('add')}>ADD CAST</button>}
       </div>
     </div>

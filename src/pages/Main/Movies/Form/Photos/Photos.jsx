@@ -40,6 +40,53 @@ function Photos() {
   })
   }
 
+  //IMPORT FUNCTION
+  function importPhotos(){
+    axios({
+        method: 'get',
+        url: `https://api.themoviedb.org/3/movie/${tmdbId}/images`,
+        headers: {
+            Accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlN2FhNTRiYzJhNzI2MTFlZjY3MDAxZDllYjVkNThkMyIsIm5iZiI6MTcyOTI5NzUwNi40MzA0MTYsInN1YiI6IjY3MTJmYTU3MTZjYWE4YjBmMDljN2U1NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.prLBCxZWKAzfnbc5pboPiBEiHNWu4j8csiGBO2Af7x4', // Make sure to replace this with your actual API key
+          },
+    }).then((response) => {
+        saveImportedCasts(response.data.backdrops);
+
+        setIsError(false);
+        setAlertMessage(`Successfully Imported ${response.data.backdrops.length} Photos`);
+        setTimeout(() => {
+          setAlertMessage('')
+          getAll();
+        }, 2000);
+
+    })
+}
+
+async function saveImportedCasts(importedData) {
+  console.log(importedData)
+  await Promise.all(importedData.map(async (data) => {
+    const payload = {
+      userId: auth.user.userId,
+      movieId: tmdbId,
+      url: `https://image.tmdb.org/t/p/w500/${data.file_path}`,
+      description: `Imported from TMDB`,
+    };
+    console.log('Sending payload:', payload);
+    try {
+      const response = await axios.post('/photos', payload, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      });
+      console.log('Response:', response);
+    } catch (error) {
+      console.error('Error sending cast data:', error);
+    }
+  }));
+  console.log('Done!');
+}
+
   const handleDelete = (id) => {
     const isConfirmed = window.confirm('Are you sure you want to delete this photo?');
     if (isConfirmed) {
@@ -76,6 +123,7 @@ function Photos() {
       {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
       <h2 onClick={() => setState('base')}>{state != 'base' ? <span className='back-button fas fa-chevron-left'><h3>Back to Photos</h3></span> :  'Photos'}</h2>
       <div>
+        <button onClick={importPhotos}>IMPORT PHOTOS</button>
         {state == 'base' && <button onClick={()=>setState('add')}>ADD PHOTO</button>}
       </div>
     </div>
