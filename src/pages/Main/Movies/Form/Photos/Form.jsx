@@ -188,6 +188,7 @@ function Form({ data, state, setState }) {
                 name="url"
                 ref={urlRef}
                 onChange={handleOnChange}
+                value={selectedData.url}
                 // id='file-upload'
                 // hidden
               />

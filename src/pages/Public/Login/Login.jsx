@@ -83,7 +83,7 @@ function Login() {
           if (res.data.user.role === 'admin'){
             navigate('/main/dashboard');
           }else{
-            navigate('/main/movies'); // this is the user login
+            navigate('/home'); // this is the user login
           }
           setStatus('idle');
         }, 3000);

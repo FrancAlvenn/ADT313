@@ -129,9 +129,10 @@ function Videos() {
     </div>
     {state == 'add' && (<Form data={[]} state={state} setState={setState}/>)}
     {state == 'update' && (<Form data={selectedVideo} state={state}  setState={setState}/>)}
-    {state == 'base' && (<div className="video-cards-container">
+    {state == 'base' && (
+      <div className="video-cards-container">
         <div className="video-cards-group">
-        {videoData?.map((video) => (
+          {videoData?.map((video) => (
           video.movieId === parseInt(tmdbId) && (
             <div key={video.id} className="video-card" onClick={() => {setSelectedVideo(video)}}>
                 <div className='control-group'>
@@ -150,9 +151,9 @@ function Videos() {
                 </iframe>
             </div>
           )
-        ))}
+          ))}
         </div>
-    </div>)}
+      </div>)}
     </>
   )
 }

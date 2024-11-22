@@ -14,6 +14,8 @@ import Casts from './pages/Main/Movies/Form/Casts/Casts';
 import Videos from './pages/Main/Movies/Form/Videos/Videos';
 import Photos from './pages/Main/Movies/Form/Photos/Photos';
 import { AuthProvider } from './context/AppContext';
+import Client from './pages/Client/Client';
+import Home from './pages/Client/Home/Home';
 
 const router = createBrowserRouter([
   {
@@ -67,9 +69,18 @@ const router = createBrowserRouter([
             ]
           },
         ],
-      },
+      }
     ],
-  },
+  },{
+    path: '/home',
+    element: <Client/>,
+    children: [
+        {
+          path: '',
+          element: <Home/>
+        }
+    ]
+  }
 ]);
 
 function App() {

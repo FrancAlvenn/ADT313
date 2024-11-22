@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
-import './Client.css'
-import { AppContext } from '../../context/AppContext';
-import { Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Home.css'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../../context/AppContext';
 
-function Client() {
+function Home() {
   //user token and information
   const { auth } = useContext(AppContext);
 
@@ -19,7 +19,6 @@ function Client() {
   const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user')
@@ -74,30 +73,42 @@ function Client() {
   
 
   return (
-    <div className='user-container'>
-      <nav>
-        <h1>Movie<span>DB</span></h1>
-        <span className='fas fa-right-from-bracket logout' onClick={handleLogout}></span>
-      </nav>
-      <Outlet/>
-      <footer className="footer">
-        <div className="footer-content">
-          <p>&copy; 2024 MovieDB. All rights reserved.</p>
-          <p>
-            Discover and explore the world's greatest movies and TV shows.
-            Data provided by <a href="https://www.themoviedb.org" target="_blank">The Movie Database (TMDb)</a>.
-          </p>
-          <p>
-            Thank you for using our platform to find your next favorite movie!
-            Stay tuned for updates and new releases.
-          </p>
-          <p className="footer-credits">
-            Designed and developed by Franc Alvenn Dela Cruz. Built with a passion for film and technology.
-          </p>
+    <div className='user-home'>
+      {alertMessage && (<div className={`alert-box ${isError ? 'error' : 'success'}`}>{alertMessage}</div>)}
+      <div className="user-container">
+        <div className='featured-movie'>
+          <span>
+            <h1>{featuredMovie.title}</h1>
+            <p>{featuredMovie.overview}</p>
+            <button>Watch Now</button>
+            <button className='transparent'>Watch Trailer</button>
+          </span>
+          <img src={featuredMovie.posterPath} className='movie-frame'/>
         </div>
-      </footer>
+        <h2 className='movie-cards-header'>Movies</h2>
+        <div className="movie-cards-container">
+          <div className="movie-cards-group">
+              {movies.map((movie)=>(
+                <div className="movie-card">
+                  <img
+                    src={movie.posterPath}
+                    className="movie-frame"
+                  >
+                  </img>
+                  <p>{movie.title}</p>
+                </div>
+              ))
+              }
+          </div>
+        </div>
+
+
+
+
+      </div>
+
     </div>
   );
 }
 
-export default Client
+export default Home
