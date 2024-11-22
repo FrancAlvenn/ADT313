@@ -76,7 +76,9 @@ function Client() {
   return (
     <div className='user-container'>
       <nav>
-        <h1>Movie<span>DB</span></h1>
+        <span onClick={()=>navigate('/home')}>
+          <h1>Movie<span>DB</span></h1>
+        </span>
         <span className='fas fa-right-from-bracket logout' onClick={handleLogout}></span>
       </nav>
       <Outlet/>

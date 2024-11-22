@@ -12,14 +12,16 @@
     position: sticky;
     top: 0;
     right: 0;
+    z-index: 3;
 }
 
 .logout{
     cursor: pointer;
 }
 
-nav > h1 > span{
+nav > span> h1 > span{
     color: hsl(214, 83%, 55%);
+    cursor: pointer;
 }
 
 

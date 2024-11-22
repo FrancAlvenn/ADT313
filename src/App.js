@@ -16,6 +16,7 @@ import Photos from './pages/Main/Movies/Form/Photos/Photos';
 import { AuthProvider } from './context/AppContext';
 import Client from './pages/Client/Client';
 import Home from './pages/Client/Home/Home';
+import Movie from './pages/Client/Movie/Movie';
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
         {
           path: '',
           element: <Home/>
+        },
+        {
+          path: 'movie/:movieId',
+          element: <Movie/>
         }
     ]
   }

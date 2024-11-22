@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Outlet, useOutlet, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
@@ -14,7 +14,7 @@ const Form = () => {
 
   const [query, setQuery] = useState('');
   const [searchedMovieList, setSearchedMovieList] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(undefined);
+  const [selectedMovie, setSelectedMovie] = useState([]);
 
   const titleRef = useRef();
   const overviewRef = useRef();
@@ -22,6 +22,7 @@ const Form = () => {
   const release_dateRef = useRef();
   const vote_averageRef = useRef();
   const posterRef = useRef();
+  const is_featuredRef = useRef();
 
   const [status, setStatus] = useState('idle');
 
@@ -149,7 +150,7 @@ const Form = () => {
         voteAverage: selectedMovie.vote_average,
         backdropPath: `https://image.tmdb.org/t/p/original/${selectedMovie.backdrop_path}`,
         posterPath: `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`,
-        isFeatured: 0,
+        isFeatured: selectedMovie.is_featured,
       };
 
       axios({
@@ -203,7 +204,7 @@ const Form = () => {
         voteAverage: selectedMovie.vote_average,
         backdropPath: `https://image.tmdb.org/t/p/original/${selectedMovie.backdrop_path}`,
         posterPath: `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`,
-        isFeatured: 0,
+        isFeatured: selectedMovie.is_featured,
       };
       console.log(data)
       axios({
@@ -235,6 +236,12 @@ const Form = () => {
     if (movieId) {
       axios.get(`/movies/${movieId}`).then((response) => {
         setMovie(response.data);
+
+        let temp = 0;
+        if(response.data.isFeatured == true){
+          temp = 1
+        }
+
         const tempData = {
           id: response.data.tmdbId,
           tmdbId: response.data.id,
@@ -244,8 +251,10 @@ const Form = () => {
           poster_path: response.data.posterPath,
           release_date: response.data.releaseDate,
           vote_average: response.data.voteAverage,
+          is_featured: temp,
         };
         setSelectedMovie(tempData);
+        console.log(response.data.isFeatured)
       }).catch(error => console.error("Error fetching movie data: ", error));
     }
 
@@ -337,8 +346,8 @@ const Form = () => {
                   if (status === 'loading') {
                     return;
                   }
-                  const { title, overview, popularity, release_date, vote_average } = selectedMovie;
-                  if (title && overview && popularity && release_date && vote_average) {
+                  const { title, overview, popularity, release_date, vote_average, is_featured } = selectedMovie;
+                  if (title && overview && popularity && release_date && vote_average && is_featured) {
                     movieId !== undefined ? handleUpdate(movieId) : handleSave()
                   } else {
                     //fields are incomplete
@@ -354,6 +363,8 @@ const Form = () => {
                       release_dateRef.current.focus();
                     } else if (!vote_average) {
                       vote_averageRef.current.focus();
+                    } else if (!is_featured){
+                      is_featured.current.focus();
                     }
                   }
                 }}
@@ -474,7 +485,23 @@ const Form = () => {
               />
               {debounceState && isFieldsDirty && selectedMovie.vote_average == '' && (<span className='errors'>This field is required</span>)}
             </div>
-            
+            <div className='field'>
+              Is Featured:
+              <select
+                value={selectedMovie ? selectedMovie.is_featured : ''}
+                required
+                name='is_featured'
+                onChange={handleOnChange}
+                ref={is_featuredRef}
+                className='custom-select'
+              >
+                <option value={1}>Yes</option>
+                <option value={0}>No</option>
+              </select>
+              {debounceState && isFieldsDirty && selectedMovie.is_featured === '' && (
+                <span className='errors'>This field is required</span>
+              )}
+            </div>
           </div>
 
           <div className="col poster-col">

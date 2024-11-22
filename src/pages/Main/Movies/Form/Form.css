@@ -204,7 +204,7 @@
 .movie-details{
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 30px;
 }
   
 
@@ -224,6 +224,46 @@
   padding: 10px;
   border-radius: 15px;
 }
+
+
+.custom-select {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  color: hsl(208, 100%, 97%);
+  background-color: hsl(216, 42%, 14%);
+  border: 1px solid hsl(216, 42%, 14%);
+  border-radius: 8px;
+  appearance: none; /* Remove default arrow in browsers */
+  cursor: pointer;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.custom-select::after {
+  content: '▼';
+  font-size: 14px;
+  color: #666;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.custom-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+
+.custom-select option {
+  padding: 10px;
+  color: hsl(208, 100%, 97%);
+  background-color: hsl(216, 42%, 14%);
+}
+
 
 
 
