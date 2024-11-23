@@ -144,9 +144,9 @@ function Home() {
         <div className='movie-cards-container'>
           <div className='movie-cards-group'>
             {movies.map((movie) => (
-              <div 
-              className='movie-card' 
-              key={movie.id}  
+              <div
+              className='movie-card'
+              key={movie.id}
               onClick={() => {
                 navigate(`movie/${movie.id}`);
               }}

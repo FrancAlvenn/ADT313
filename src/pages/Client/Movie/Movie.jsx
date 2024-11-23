@@ -113,7 +113,7 @@ function Movie() {
                         className='background-overlay'
                         alt='Featured Movie'
                     />
-                    <span>
+                    <span id='movie-description'> 
                         <h1>{movie.title}</h1>
                         <p>{movie.overview}</p>
                         <a href='#videos' className='transparent'>Watch Trailer</a>

@@ -363,8 +363,6 @@ const Form = () => {
                       release_dateRef.current.focus();
                     } else if (!vote_average) {
                       vote_averageRef.current.focus();
-                    } else if (!is_featured){
-                      is_featured.current.focus();
                     }
                   }
                 }}
