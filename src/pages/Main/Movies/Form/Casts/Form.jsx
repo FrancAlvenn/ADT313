@@ -70,13 +70,6 @@ function Form({ data, state, setState }) {
   }
 
   const handleSave = async (event) => {
-    //event.preventDefault();
-    // if (!file) {
-    //   setIsError(true);
-    //   setAlertMessage('No file selected');
-    //   setTimeout(() => setAlertMessage(''), 2000);
-    //   return;
-    // }
 
     setStatus('loading')
 
@@ -141,7 +134,7 @@ function Form({ data, state, setState }) {
     const data = {
       id: selectedData.id,
       userId: selectedData.userId,
-      movieI: tmdbId,
+      movieId: tmdbId,
       name: selectedData.name,
       characterName: selectedData.characterName,
       description: selectedData.description,

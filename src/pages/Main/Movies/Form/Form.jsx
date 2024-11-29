@@ -363,6 +363,8 @@ const Form = () => {
                       release_dateRef.current.focus();
                     } else if (!vote_average) {
                       vote_averageRef.current.focus();
+                    } else if (!is_featured) {
+                      is_featuredRef.current.focus();
                     }
                   }
                 }}
@@ -491,8 +493,9 @@ const Form = () => {
                 name='is_featured'
                 onChange={handleOnChange}
                 ref={is_featuredRef}
-                className='custom-select'
+                className='custom-select' 
               >
+                <option value="">Select</option>
                 <option value={1}>Yes</option>
                 <option value={0}>No</option>
               </select>
