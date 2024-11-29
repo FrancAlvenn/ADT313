@@ -126,91 +126,102 @@ function Movie() {
                 </div>
             </div>
 
-            <div id='container'>
-                <h2>Casts</h2>
-                <div className="cast-cards-container">
-                    <div className='cast-cards-group'>
-                        {castData.map((cast) => (
-                            cast.movieId === parseInt(movie.tmdbId) && (
-                                <div key={cast.id} className="cast-card">
-                                <div className='control-group'></div>
-                                <img
-                                    src={
-                                    cast.url && !cast.url.includes("null")
-                                        ? cast.url
-                                        : 'https://via.placeholder.com/500x750?text=No+Image'
-                                    }
-                                    className="cast-image"
-                                    allowFullScreen
-                                />
-                                <p className='cast-name'>{cast.name}</p>
-                                <p className='cast-character-name'>{cast.characterName}</p>
-                                </div>
-                            )
-                        ))}
-                    </div>
+            <div id="container">
+            <h2>Casts</h2>
+            <div className="cast-cards-container">
+                {castData && castData.filter(cast => cast.movieId === parseInt(movie.tmdbId)).length > 0 ? (
+                <div className="cast-cards-group">
+                    {castData.filter(cast => cast.movieId === parseInt(movie.tmdbId)).map(cast => (
+                        <div key={cast.id} className="cast-card">
+                        <div className="control-group"></div>
+                        <img
+                            src={
+                            cast.url && !cast.url.includes("null")
+                                ? cast.url
+                                : "https://via.placeholder.com/500x750?text=No+Image"
+                            }
+                            className="cast-image"
+                            alt={cast.name}
+                        />
+                        <p className="cast-name">{cast.name}</p>
+                        <p className="cast-character-name">{cast.characterName}</p>
+                        </div>
+                    ))}
                 </div>
+                ) : (
+                <h3 id='no-movie-data-text'>✨ All dressed up, but no stars to show. 🌟</h3>
+                )}
+            </div>
             </div>
 
 
 
-            <div id='container'>
-                <h2>Photos</h2>
-                <div className="photo-cards-container">
-                    <div className='photo-cards-group'>
-                    {photoData?.map((photo) => (
-                        photo.movieId === parseInt(movie.tmdbId) && (
+            <div id="container">
+            <h2>Photos</h2>
+            <div className="photo-cards-container">
+                {photoData && photoData.filter(photo => photo.movieId === parseInt(movie.tmdbId)).length > 0 ? (
+                <div className="photo-cards-group">
+                    {photoData.filter(photo => photo.movieId === parseInt(movie.tmdbId)).map(photo => (
                         <div key={photo.id} className="photo-card">
-                            <div className='control-group'>
-                            {/* Add any control elements you want here */}
-                            </div>
-                            <img
+                        <div className="control-group">
+                        </div>
+                        <img
                             src={
-                                photo.url && !photo.url.includes("null")
+                            photo.url && !photo.url.includes("null")
                                 ? photo.url
-                                : 'https://via.placeholder.com/500x750?text=No+Image'
+                                : "https://via.placeholder.com/500x750?text=No+Image"
                             }
                             className="photo-image"
+                            alt={photo.description || "Photo"}
                             allowFullScreen
                             onClick={() => openModal(photo.url, `${photo.description}`)}
-                            />
+                        />
                         </div>
-                        )
                     ))}
-                    </div>
                 </div>
+                ) : (
+                <h3 id='no-movie-data-text'>📷 Looks like the camera lens was on vacation! 🌴</h3>
+                )}
             </div>
 
             {isModalOpen && (
                 <div className="modal" onClick={closeModal}>
-                    <span className="close" onClick={closeModal}>&times;</span>
-                    <img className="modal-content" src={currentImage} alt={currentCaption} />
-                    <div id="caption">{currentCaption}</div>
+                <span className="close" onClick={closeModal}>&times;</span>
+                <img
+                    className="modal-content"
+                    src={currentImage}
+                    alt={currentCaption}
+                />
+                <div id="caption">{currentCaption}</div>
                 </div>
             )}
+            </div>
 
 
-        <div className="videos-cards-container">
-            <h2 id='videos'>Videos</h2>
-            <div className="videos-cards-group">
-            {videoData?.map((video) => (
-            video.movieId === parseInt(movie.tmdbId) && (
-                <div key={video.id} className="videos-card">
-                    <iframe
-                    src={
-                        video.url && !video.url.includes("null")
-                        ? video.url
-                        : 'https://via.placeholder.com/500x300?text=No+Video'
+
+            <div className="videos-cards-container">
+            <h2 id="videos">Videos</h2>
+            {videoData && videoData.filter(video => video.movieId === parseInt(movie.tmdbId)).length > 0 ? (
+                <div className="videos-cards-group">
+                {videoData.filter(video => video.movieId === parseInt(movie.tmdbId)).map(video => (
+                    <div key={video.id} className="videos-card">
+                        <iframe
+                        src={
+                            video.url && !video.url.includes("null")
+                            ? video.url
+                            : "https://via.placeholder.com/500x300?text=No+Video"
                         }
                         id="video-frame"
                         allowFullScreen
-                    >
-                    </iframe>
+                        ></iframe>
+                    </div>
+                    ))}
                 </div>
-            )
-            ))}
+            ) : (
+                <h3 id='no-movie-data-text'>🎥 Lights, camera... wait, where’s the action? 🎬</h3>
+            )}
             </div>
-        </div>
+
 
 
 

@@ -72,6 +72,30 @@
     z-index: 2;
 }
 
+@media only screen and (max-width: 768px){
+  .featured-movie > .carousel > .movie-frame{
+    display: none;
+  }
+
+  #movie-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured-movie > .carousel > span > button{
+    margin-top: 20px;
+    font-size: 12px;
+    width: 110px;
+  }
+
+  .featured-movie > .carousel > span > p{
+    font-size: 14px;
+    width: 100%;
+}
+}
+
+
 .carousel-controls {
     position: absolute;
     top: 50%;

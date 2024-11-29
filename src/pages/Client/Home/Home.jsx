@@ -111,7 +111,7 @@ function Home() {
                 className='background-overlay'
                 alt='Featured Movie'
               />
-              <span>
+              <span id='movie-details'>
                 <h1>{featuredMovies[currentFeaturedIndex].title}</h1>
                 <p>{featuredMovies[currentFeaturedIndex].overview}</p>
                 <button

@@ -307,5 +307,9 @@
     display: none;
   }
 
+  #no-movie-data-text{
+    font-size: 11px;
+  }
+
 }
 
