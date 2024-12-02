@@ -18,6 +18,10 @@ import Client from './pages/Client/Client';
 import Home from './pages/Client/Home/Home';
 import Movie from './pages/Client/Movie/Movie';
 
+
+//ADT313 Project (Movie DB)
+//Submitted by: Franc Alvenn Dela Cruz
+
 const router = createBrowserRouter([
   {
     path: '/',
