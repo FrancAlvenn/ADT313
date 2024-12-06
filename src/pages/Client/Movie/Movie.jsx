@@ -3,19 +3,20 @@ import { AppContext } from '../../../context/AppContext';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './Movie.css'
+import { useMovieContext } from '../../../context/MovieContext';
 
 function Movie() {
 
-    //user token and information
+  const { movie, setMovie } = useMovieContext();
+
+  console.log(movie)
+
+  //user token and information
   const { auth } = useContext(AppContext);
 
   let { movieId } = useParams();
 
-  const [movies , setMovies] = useState([])
-  const [ featuredMovie, setFeaturedMovie ] = useState([])
-
-
-  const [movie, setMovie] = useState([]);
+//   const [movie, setMovie] = useState([]);
   const [castData, setCastData] = useState([])
   const [photoData, setPhotoData] = useState([])
   const [videoData, setVideoData] = useState([])
@@ -62,23 +63,13 @@ function Movie() {
         },
     }).then((response) => {
         setVideoData(response.data)
-  })
+    })
   }
 
   useEffect(() => {
     if (movieId) {
       axios.get(`/movies/${movieId}`).then((response) => {
         setMovie(response.data);
-        const tempData = {
-          id: response.data.tmdbId,
-          tmdbId: response.data.id,
-          title: response.data.title,
-          overview: response.data.overview,
-          popularity: response.data.popularity,
-          poster_path: response.data.posterPath,
-          release_date: response.data.releaseDate,
-          vote_average: response.data.voteAverage,
-        };
       }).catch(error => console.error("Error fetching movie data: ", error));
     }
   }, [movieId]);
@@ -105,6 +96,7 @@ function Movie() {
 
   return (
     <>
+        {movie && (
         <div className="user-movie-container">
             <div className='user-container'>
                 <div className='featured-movie'>
@@ -222,12 +214,8 @@ function Movie() {
             )}
             </div>
 
-
-
-
-
         </div>
-    
+        )}
     </>
   )
 }

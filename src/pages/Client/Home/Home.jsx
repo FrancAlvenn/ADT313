@@ -3,15 +3,16 @@ import './Home.css';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../../context/AppContext';
+import { useMovieContext } from '../../../context/MovieContext';
 
 function Home() {
   // user token and information
   const { auth } = useContext(AppContext);
 
-  const [movies, setMovies] = useState([]);
   const [featuredMovies, setFeaturedMovies] = useState([]);
   const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
 
+  const { movieList, setMovieList, setMovie } = useMovieContext();
   // alert box state
   const [alertMessage, setAlertMessage] = useState('');
   const [isError, setIsError] = useState(false);
@@ -49,12 +50,12 @@ function Home() {
     })
       .then((response) => {
 
+        setMovieList(response.data);
         //get all featured movies
         const allMovies = response.data;
         const featuredMovies = allMovies.filter((movie) => movie.isFeatured === true);
         const selectedFeaturedMovies = featuredMovies.length > 0 ? featuredMovies : allMovies.slice(0, 5); //condition where there are no featured movie
 
-        setMovies(response.data);
         setFeaturedMovies(selectedFeaturedMovies);
         setIsError(false);
         setAlertMessage(response.data.message);
@@ -116,6 +117,7 @@ function Home() {
                 <p>{featuredMovies[currentFeaturedIndex].overview}</p>
                 <button
                   onClick={() => {
+                    setMovie(featuredMovies[currentFeaturedIndex]);
                     navigate(`movie/${featuredMovies[currentFeaturedIndex].id}`);
                   }}
                 >
@@ -143,11 +145,12 @@ function Home() {
         <h2 className='movie-cards-header'>Movies</h2>
         <div className='movie-cards-container'>
           <div className='movie-cards-group'>
-            {movies.map((movie) => (
+            {movieList.map((movie) => (
               <div
               className='movie-card'
               key={movie.id}
               onClick={() => {
+                setMovie(movie);
                 navigate(`movie/${movie.id}`);
               }}
               >

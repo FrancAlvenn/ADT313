@@ -17,6 +17,7 @@ import { AuthProvider } from './context/AppContext';
 import Client from './pages/Client/Client';
 import Home from './pages/Client/Home/Home';
 import Movie from './pages/Client/Movie/Movie';
+import MovieContextProvider from './context/MovieContext';
 
 
 //ADT313 Project (Movie DB)
@@ -95,9 +96,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AuthProvider>
+      <MovieContextProvider>
     <div className='App'>
       <RouterProvider router={router} />
     </div>
+      </MovieContextProvider>
     </AuthProvider>
   );
 }
